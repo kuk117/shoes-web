@@ -1,0 +1,22 @@
+{
+  "name": "vue-shoe-website",
+  "version": "1.0.0",
+  "description": "莆田正奇鞋业咨询网站 - Vue 3 纯前端版本",
+  "scripts": {
+    "dev": "node server.js",
+    "serve": "npx http-server -p 8080 -c-1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "vue3",
+    "shoe",
+    "consulting",
+    "static-site"
+  ],
+  "author": "莆田正奇鞋业咨询",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}

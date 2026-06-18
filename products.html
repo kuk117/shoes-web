@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="正奇咨询4+1产品体系：精益制造1.0、敏捷制造2.0（iMES）、利润制造3.0、物联制造4.0、商学培训5.0">
+  <title>咨询产品 | 正奇咨询</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>正</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Navbar -->
+    <header :class="['site-nav', { 'site-nav-solid': scrolled }]">
+      <div class="container-page" style="display: flex; align-items: center; justify-content: space-between; height: 64px;">
+        <a href="index.html" class="group" style="display: flex; align-items: center; gap: 0.75rem;">
+          <img src="images/正奇logo透明底.png" alt="正奇咨询" style="height: 42px; width: auto;" />
+          <span style="line-height: 1.2;">
+            <span style="display: block; font-size: 1rem; font-weight: 900; color: #17231f;">正奇咨询</span>
+            <span style="display: block; font-size: 0.69rem; font-weight: 600; color: #64746e;">精益咨询 实战专家</span>
+          </span>
+        </a>
+        <nav class="desktop-nav" style="display: flex; align-items: center; gap: 0.25rem;">
+          <a v-for="item in navItems" :key="item.path" :href="item.path"
+             :class="['nav-link', { 'nav-link-active': isActive(item.path) }]">
+            {{ item.name }}
+          </a>
+        </nav>
+        <a href="contact.html" class="btn-primary btn-compact desktop-btn" style="display: inline-flex;">
+          预约调研 <span>→</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="scroll-progress" :style="{ width: progress + '%' }"></div>
+
+            <!-- Hero Section -->
+      <section style="background: linear-gradient(180deg, #ffffff 0%, #f8faf9 100%); padding: 6rem 0; color: #17231f; position: relative; overflow: hidden;">
+        <div class="container-page" style="text-align: center; position: relative; z-index: 2;">
+          <div style="animation: fadeInUp 0.8s ease-out both;">
+            <div style="display:inline-block;padding:0.5rem 1.5rem;background:#f1f3f2;border-radius:2rem;margin-bottom:1.5rem;font-size:0.875rem;font-weight:700;color:#4a5568;letter-spacing:0.06em;">正奇咨询 · 咨询产品</div>
+            <h1 style="color: #17231f; font-size: clamp(2rem,4vw,3.25rem); font-weight: 900; line-height: 1.3; margin-bottom: 1.5rem; letter-spacing: -0.02em;">
+              鞋业转型升级"4+1"模式
+            </h1>
+            <p style="font-size: clamp(1.05rem,2vw,1.35rem); line-height: 1.9; color: #5d6d67; max-width: 52rem; margin: 0 auto 2.5rem;">
+              从订单可控到经营可视，从精益制造到智能制造的完整升级路径
+            </p>
+            <div style="margin-top: 2.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; font-size: 0.875rem; font-weight: 600;">
+              <span style="padding: 0.6rem 1.25rem; background: #f1f3f2; border-radius: 2rem; color: #17231f; border: 1px solid #e2e6e4;">精益制造 1.0</span>
+              <span style="padding: 0.6rem 1.25rem; background: #f1f3f2; border-radius: 2rem; color: #17231f; border: 1px solid #e2e6e4;">敏捷制造 2.0</span>
+              <span style="padding: 0.6rem 1.25rem; background: #f1f3f2; border-radius: 2rem; color: #17231f; border: 1px solid #e2e6e4;">利润制造 3.0</span>
+              <span style="padding: 0.6rem 1.25rem; background: #f1f3f2; border-radius: 2rem; color: #17231f; border: 1px solid #e2e6e4;">物联制造 4.0</span>
+              <span style="padding: 0.6rem 1.25rem; background: #f1f3f2; border-radius: 2rem; color: #17231f; border: 1px solid #e2e6e4;">商学培训 5.0</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Video Showcase - ClickUp Style -->
+      <style>
+        .video-showcase {
+          background: #ffffff;
+          padding: 5rem 1.5rem;
+          border-top: 1px solid #e5e7eb;
+          border-bottom: 1px solid #e5e7eb;
+        }
+        .video-grid {
+          max-width: 1200px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: 1fr 380px;
+          gap: 2.5rem;
+          align-items: start;
+        }
+        /* 左侧主播放器 */
+        .main-player {
+          position: relative;
+          border-radius: 16px;
+          overflow: hidden;
+          background: #f8fafc;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+        .player-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 1rem 1.25rem;
+          background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+          color: white;
+        }
+        .player-logo {
+          width: 36px;
+          height: 36px;
+          background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.75rem;
+          font-weight: 900;
+          flex-shrink: 0;
+        }
+        .player-title {
+          font-size: 0.95rem;
+          font-weight: 600;
+          line-height: 1.3;
+          flex: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .player-video-area {
+          position: relative;
+          aspect-ratio: 16 / 9;
+          background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+          cursor: pointer;
+        }
+        .player-video-area video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+        .player-poster {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .player-poster img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .play-btn-center {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 80px;
+          height: 80px;
+          background: #ef4444;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 24px rgba(239, 68, 68, 0.45);
+          z-index: 10;
+        }
+        .play-btn-center:hover {
+          transform: translate(-50%, -50%) scale(1.08);
+          box-shadow: 0 6px 32px rgba(239, 68, 68, 0.55);
+        }
+        .play-btn-center svg {
+          width: 32px;
+          height: 32px;
+          fill: white;
+          margin-left: 4px;
+        }
+        .player-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 1rem 1.25rem;
+          background: #f8fafc;
+          border-top: 1px solid #e5e7eb;
+        }
+        .share-btn {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: #e2e8f0;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+        }
+        .share-btn:hover {
+          background: #cbd5e1;
+        }
+        .share-btn svg {
+          width: 18px;
+          height: 18px;
+          fill: #475569;
+        }
+        .platform-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.6rem 1.25rem;
+          background: #e2e8f0;
+          border-radius: 8px;
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: #475569;
+          text-decoration: none;
+          transition: all 0.2s ease;
+        }
+        .platform-btn:hover {
+          background: #cbd5e1;
+        }
+        .platform-btn svg {
+          width: 18px;
+          height: 18px;
+          fill: #ef4444;
+        }
+        /* 右侧视频列表 */
+        .video-sidebar {
+          display: flex;
+          flex-direction: column;
+        }
+        .sidebar-title {
+          font-size: 0.8rem;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          color: #6366f1;
+          margin-bottom: 1rem;
+        }
+        .sidebar-divider {
+          height: 1px;
+          background: #e5e7eb;
+          margin-bottom: 1.25rem;
+        }
+        .video-playlist {
+          display: flex;
+          flex-direction: column;
+          gap: 0.875rem;
+          max-height: 480px;
+          overflow-y: auto;
+          padding-right: 0.5rem;
+          scrollbar-width: thin;
+          scrollbar-color: #cbd5e1 transparent;
+        }
+        .video-playlist::-webkit-scrollbar {
+          width: 5px;
+        }
+        .video-playlist::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .video-playlist::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 3px;
+        }
+        .playlist-item {
+          display: flex;
+          gap: 0.875rem;
+          padding: 0.625rem;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          background: transparent;
+        }
+        .playlist-item:hover {
+          background: #f8fafc;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+        .playlist-item.active {
+          background: #f1f5f9;
+        }
+        .playlist-thumb {
+          width: 110px;
+          height: 68px;
+          border-radius: 8px;
+          overflow: hidden;
+          flex-shrink: 0;
+          position: relative;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .playlist-thumb img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .playlist-info {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 0.3rem;
+        }
+        .playlist-name {
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: #1e293b;
+          line-height: 1.4;
+        }
+        .playlist-item.active .playlist-name {
+          font-weight: 700;
+          color: #0f172a;
+        }
+        .playlist-badge {
+          font-size: 0.7rem;
+          font-weight: 600;
+          color: #94a3b8;
+        }
+        /* 底部按钮 */
+        .video-bottom {
+          display: flex;
+          justify-content: center;
+          margin-top: 2.5rem;
+          padding-top: 2rem;
+          border-top: 1px solid #e5e7eb;
+        }
+        .watch-more {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.875rem 3rem;
+          background: #111827;
+          color: white;
+          border-radius: 10px;
+          font-size: 0.95rem;
+          font-weight: 600;
+          text-decoration: none;
+          transition: all 0.3s ease;
+        }
+        .watch-more:hover {
+          background: #1f2937;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+        @media (max-width: 1024px) {
+          .video-grid {
+            grid-template-columns: 1fr;
+          }
+          .video-playlist {
+            max-height: none;
+            flex-direction: row;
+            overflow-x: auto;
+          }
+          .playlist-item {
+            min-width: 240px;
+          }
+        }
+        @media (max-width: 768px) {
+          .video-showcase {
+            padding: 3rem 1rem;
+          }
+          .play-btn-center {
+            width: 60px;
+            height: 60px;
+          }
+          .play-btn-center svg {
+            width: 24px;
+            height: 24px;
+          }
+        }
+      </style>
+
+      <section class="video-showcase">
+        <div class="video-grid">
+          <!-- 左侧主播放器 -->
+          <div class="main-player">
+            <div class="player-header">
+              <div class="player-logo">正奇</div>
+              <div class="player-title">{{ currentVideo.title }}</div>
+            </div>
+            <div class="player-video-area" @click="togglePlay">
+              <div v-if="!isPlaying" class="player-poster">
+                <img :src="currentVideo.thumbnail" :alt="currentVideo.title" />
+              </div>
+              <video v-show="isPlaying"
+                     ref="mainVideo"
+                     :src="currentVideo.src"
+                     :key="currentVideo.id"
+                     preload="metadata"
+                     @ended="isPlaying = false">
+              </video>
+              <div v-if="!isPlaying" class="play-btn-center" @click.stop="togglePlay">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="player-footer">
+              <button class="share-btn" title="分享">
+                <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8m-4-6l-4-4m0 0L8 6m4-4v13"/></svg>
+              </button>
+              <a href="#" class="platform-btn">
+                前往平台观看：
+                <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                YouTube
+              </a>
+            </div>
+          </div>
+
+          <!-- 右侧视频列表 -->
+          <div class="video-sidebar">
+            <div class="sidebar-title">OTHER VIDEOS</div>
+            <div class="sidebar-divider"></div>
+            <div class="video-playlist">
+              <div v-for="video in videoList" 
+                   :key="video.id"
+                   :class="['playlist-item', { active: currentVideo.id === video.id }]"
+                   @click="selectVideo(video)">
+                <div class="playlist-thumb">
+                  <img :src="video.thumbnail" :alt="video.title" />
+                </div>
+                <div class="playlist-info">
+                  <div class="playlist-name">{{ video.title }}</div>
+                  <div class="playlist-badge">{{ video.badge }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 底部按钮 -->
+        <div class="video-bottom">
+          <a href="cases.html" class="watch-more">watch more</a>
+        </div>
+      </section>
+
+      <!-- Product Modules -->
+      <div>
+        <!-- Module 1: 精益制造 1.0 -->
+        <section class="module-card" style="background: #1a1a1a; color: white; position: relative; overflow: hidden;">
+          <video autoplay loop muted playsinline class="video-background" preload="metadata">
+            <source src="videos/01.mp4" type="video/mp4">
+          </video>
+          <div class="video-overlay"></div>
+          <div class="container-page module-content">
+            <div class="module-text-content">
+              <div class="module-badge">STEP 1</div>
+              <h2 class="module-title">精益制造 1.0</h2>
+              <p class="module-subtitle">订单可控 · 基础管理标准化</p>
+              <p class="module-description">
+                通过精益手段提升效率，首先解决感观可见的厂房、部门、机台及工序的科学布局，进而推动精益生控模式、原仓目视化、冲裁同步派工、针车快速流水、成型轮次生产等模式，最终实现订单可控。
+              </p>
+              <div class="module-features">
+                <div class="feature-item">
+                  <span class="feature-icon">✓</span>
+                  <span>建立5S现场管理与标准作业流程（SOP）</span>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">✓</span>
+                  <span>科学布局：B2B、F2F、D2D、P2P四级规划</span>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">✓</span>
+                  <span>可视化管理、降低在制品库存</span>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">✓</span>
+                  <span>生产周期缩短、日/小时产量实时追踪</span>
+                </div>
+              </div>
+              <a href="contact.html" class="module-cta">了解更多 →</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Module 2: 敏捷制造 2.0 -->
+        <section class="section-pad" style="background: #ffffff; padding-top: 3rem;">
+          <div class="container-page">
+            <div class="soft-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #fafbfb; border-radius: 1rem; border: 1px solid #e8eaeb;">
+              <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f1f3f2, #e8eaeb); border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <span style="font-size: 2rem; font-weight: 900; color: #4a5568;">2</span>
+              </div>
+              <div>
+                <div style="display: inline-block; padding: 0.35rem 0.9rem; background: #f1f3f2; border-radius: 2rem; margin-bottom: 0.75rem; font-size: 0.75rem; font-weight: 700; color: #4a5568;">STEP 2</div>
+                <h2 style="font-size: 1.75rem; font-weight: 900; color: #17231f; line-height: 1.3; margin-bottom: 0.5rem;">敏捷制造 2.0</h2>
+                <p style="font-size: 1.05rem; font-weight: 600; color: #4a5568; margin-bottom: 1.25rem;">团队可管 · iMES智能制造执行系统</p>
+                <p style="font-size: 0.9375rem; line-height: 1.85; color: #5d6d67; margin-bottom: 1.5rem;">
+                  根据工厂40%量身定制的软件系统，提取核心数据，通过实时数据采集、分析、传递与查询，打通鞋企订单生产的计划链、物料链及效率链，实现数控信息实时性、移动性、准确性，固化精益1.0模式。
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.5rem;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>实时生产看板、订单进度追踪、交付预警
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>支持PC/二维码/手机/平板多终端数据查询
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>业内首创AI Agent智能体，自助式语音问答
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>2019年福建省唯一省重点智能敏捷制造软件单位
+                  </div>
+                </div>
+                <a href="contact.html" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.7rem 1.6rem; background: #17231f; border-radius: 0.5rem; color: white; font-size: 0.9375rem; font-weight: 700; text-decoration: none; transition: all 0.25s ease;">了解更多 →</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Module 3: 利润制造 3.0 -->
+        <section class="module-card" style="background: #1e293b; color: white; position: relative; overflow: hidden;">
+          <video autoplay loop muted playsinline class="video-background" preload="metadata">
+            <source src="videos/02.mp4" type="video/mp4">
+          </video>
+          <div class="video-overlay"></div>
+          <div class="container-page module-content">
+            <div class="module-text-content">
+              <div class="module-badge">STEP 3</div>
+              <h2 class="module-title">利润制造 3.0</h2>
+              <p class="module-subtitle">经营可视 · 成本优化与利润挖掘</p>
+              <p class="module-description">
+                通过IE、财务手段量化核算，建立科学的报价、IE、财务体系，推动经营压力内部传导机制和绩效机制。从预警温控、水电节约、能源节约三个维度优化成本，建立成本核算体系，实现利润可控。
+              </p>
+              <div class="module-features">
+                <div class="feature-item">
+                  <span class="feature-icon">✓</span>
+                  <span>能耗实时监控、水电优化方案</span>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">✓</span>
+                  <span>双碳改善专案：电能管理、绿电应用、碳排管理</span>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">✓</span>
+                  <span>成本精细核算、部门独立核算、日盈亏可视化</span>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">✓</span>
+                  <span>四大机制：接单、双定、责任、激励</span>
+                </div>
+              </div>
+              <a href="contact.html" class="module-cta">了解更多 →</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Module 4: 物联制造 4.0 -->
+        <section class="section-pad" style="background: #ffffff;">
+          <div class="container-page">
+            <div class="soft-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #fafbfb; border-radius: 1rem; border: 1px solid #e8eaeb;">
+              <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f1f3f2, #e8eaeb); border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <span style="font-size: 2rem; font-weight: 900; color: #4a5568;">4</span>
+              </div>
+              <div>
+                <div style="display: inline-block; padding: 0.35rem 0.9rem; background: #f1f3f2; border-radius: 2rem; margin-bottom: 0.75rem; font-size: 0.75rem; font-weight: 700; color: #4a5568;">STEP 4</div>
+                <h2 style="font-size: 1.75rem; font-weight: 900; color: #17231f; line-height: 1.3; margin-bottom: 0.5rem;">物联制造 4.0</h2>
+                <p style="font-size: 1.05rem; font-weight: 600; color: #4a5568; margin-bottom: 1.25rem;">供应链协同 · AI智能制造升级</p>
+                <p style="font-size: 0.9375rem; line-height: 1.85; color: #5d6d67; margin-bottom: 1.5rem;">
+                  基于物联网 + AI技术的智能制造解决方案，打通部门信息墙，实现全链路信息掌控。包括AI Agent智能体、CTU智能仓储执行系统、数字化管理决策中心、集团化5P模型等，实现设备智能互联和预测性管理。
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.5rem;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>AI Agent：整合多系统（MRP/APS/MES/SCM）应用
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>CTU智能仓储：自动运输、出入库、严控FIFO
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>数字化管理决策中心：全链路信息掌控
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>电脑车专案、模具生产专案、鞋材生产专案
+                  </div>
+                </div>
+                <a href="contact.html" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.7rem 1.6rem; background: #17231f; border-radius: 0.5rem; color: white; font-size: 0.9375rem; font-weight: 700; text-decoration: none; transition: all 0.25s ease;">了解更多 →</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Module 5: 商学培训 5.0 -->
+        <section class="section-pad" style="background: #f8faf9;">
+          <div class="container-page">
+            <div class="soft-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #ffffff; border-radius: 1rem; border: 1px solid #e8eaeb;">
+              <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f1f3f2, #e8eaeb); border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <span style="font-size: 2rem; font-weight: 900; color: #4a5568;">5</span>
+              </div>
+              <div>
+                <div style="display: inline-block; padding: 0.35rem 0.9rem; background: #f1f3f2; border-radius: 2rem; margin-bottom: 0.75rem; font-size: 0.75rem; font-weight: 700; color: #4a5568;">STEP 5</div>
+                <h2 style="font-size: 1.75rem; font-weight: 900; color: #17231f; line-height: 1.3; margin-bottom: 0.5rem;">商学培训 5.0</h2>
+                <p style="font-size: 1.05rem; font-weight: 600; color: #4a5568; margin-bottom: 1.25rem;">人才培养 · 持续改善能力提升</p>
+                <p style="font-size: 0.9375rem; line-height: 1.85; color: #5d6d67; margin-bottom: 1.5rem;">
+                  面向鞋厂管理层和核心团队的系统化培训体系，包括精益管理思维、经营分析能力、团队协作机制、问题解决方法论。培养工厂内部导师和系统工程师，建立持续改善文化，减少对外部依赖。
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.5rem;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>精益管理培训、经营复盘训练
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>问题解决工作坊、内部教练培养
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>全系列培训课件及电子教程
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; color: #4a5568;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; flex-shrink: 0;"></span>培养内部系统工程师并认证技能
+                  </div>
+                </div>
+                <a href="contact.html" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.7rem 1.6rem; background: #17231f; border-radius: 0.5rem; color: white; font-size: 0.9375rem; font-weight: 700; text-decoration: none; transition: all 0.25s ease;">了解更多 →</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Bottom CTA -->
+      <section style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); padding: 5rem 0; color: white;">
+        <div class="container-page">
+          <div class="reveal-on-scroll" style="text-align: center; max-width: 56rem; margin: 0 auto; padding: 0 1.5rem;">
+            <h2 style="font-size: 2.25rem; font-weight: 900; margin-bottom: 1.5rem; line-height: 1.3;">
+              选择适合您企业的转型路径
+            </h2>
+            <p style="font-size: 1.125rem; line-height: 1.9; color: rgba(255,255,255,0.95); margin-bottom: 1rem;">
+              4+1模式可根据企业现状灵活组合，从单一模块到全套体系，为不同发展阶段的鞋企提供定制化解决方案。不同于传统咨询公司的标准化套路，正奇会根据您工厂的订单类型、生产规模和管理现状，量身设计改善路径。
+            </p>
+            <p style="font-size: 1rem; line-height: 1.8; color: rgba(255,255,255,0.85); margin-bottom: 2.5rem;">
+              可以从精益1.0的现场优化开始，也可以直接上敏捷2.0的iMES系统，或者从利润3.0的成本核算切入。每个模块都可以独立实施，也可以相互叠加。正奇会在初步沟通后，给出优先级建议和预期改善效果。
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+              <a href="contact.html" class="btn-primary" style="background: white; color: #14b8a6; padding: 1rem 2.25rem; font-size: 1.0625rem;">
+                <span>预约产品咨询</span> <span>→</span>
+              </a>
+              <a href="cases.html" class="btn-secondary" style="border-color: white; color: white; padding: 1rem 2.25rem; font-size: 1.0625rem;">
+                <span>查看实施案例</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid #E2E8F0; background: white; padding: 3rem 0;">
+      <div class="container-page">
+        <div style="display: grid; gap: 2.5rem;">
+          <div>
+            <a href="index.html" class="group" style="display: inline-flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+              <img src="images/logo智能.png" alt="正奇咨询" style="height: 48px; width: auto;" />
+              <span>
+                <span style="display: block; font-size: 1.25rem; font-weight: 900; color: #17231f;">正奇咨询</span>
+                <span style="font-size: 0.875rem; font-weight: 600; color: #64746e;">精益咨询 实战专家</span>
+              </span>
+            </a>
+            <p style="max-width: 40rem; font-size: 0.875rem; line-height: 1.75; color: #5d6d67;">
+              聚焦制造现场，围绕交付、效率、品质、成本和团队协作提供调研、方案、陪跑与复盘服务。
+            </p>
+          </div>
+          <div style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div>
+              <h2 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 900; color: #17231f;">快速导航</h2>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
+                <li><a href="about.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">关于正奇</a></li>
+                <li><a href="team.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">核心团队</a></li>
+                <li><a href="products.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">咨询产品</a></li>
+                <li><a href="services.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">咨询服务</a></li>
+                <li><a href="cases.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">案例成果</a></li>
+                <li><a href="contact.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">联系咨询</a></li>
+              </ul>
+            </div>
+            <div>
+              <h2 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 900; color: #17231f;">联系信息</h2>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem; color: #5d6d67;">
+                <li>莆田市正奇企业管理咨询</li>
+                <li>Mobile: +86 136 5699 9381</li>
+                <li>Wechat: KW464212148</li>
+                <li>工作日 24 小时内回复</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #E2E8F0; font-size: 0.875rem; color: #708078;">
+          <p>© 2026 正奇咨询 版权所有</p>
+          <p style="margin-top: 0.5rem;">所有咨询建议以现场调研和双方确认的项目方案为准。</p>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          scrolled: false,
+          progress: 0,
+          isPlaying: false,
+          navItems: [
+            { name: '首页', path: 'index.html' },
+            { name: '关于正奇', path: 'about.html' },
+            { name: '核心团队', path: 'team.html' },
+            { name: '咨询产品', path: 'products.html' },
+            { name: '咨询服务', path: 'services.html' },
+            { name: '案例成果', path: 'cases.html' },
+            { name: '联系咨询', path: 'contact.html' }
+          ],
+          currentVideo: {
+            id: 1,
+            title: '精益制造 1.0：订单可控与基础管理标准化',
+            shortDesc: '通过5S管理、科学布局、可视化管理实现生产流程标准化',
+            src: 'videos/01.mp4',
+            thumbnail: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
+            duration: '12:35',
+            badge: 'STEP 1'
+          },
+          videoList: [
+            {
+              id: 1,
+              title: '精益制造 1.0：订单可控',
+              shortDesc: '通过5S管理、科学布局、可视化管理实现生产流程标准化',
+              src: 'videos/01.mp4',
+              thumbnail: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80',
+              duration: '12:35',
+              badge: 'STEP 1'
+            },
+            {
+              id: 2,
+              title: '敏捷制造 2.0：iMES智能系统',
+              shortDesc: '实时数据采集与分析，打通计划链、物料链及效率链',
+              src: 'videos/02.mp4',
+              thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80',
+              duration: '15:20',
+              badge: 'STEP 2'
+            },
+            {
+              id: 3,
+              title: '利润制造 3.0：经营可视化',
+              shortDesc: '成本精细核算、能耗监控优化，建立四大经营管理机制',
+              src: 'videos/01.mp4',
+              thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80',
+              duration: '14:08',
+              badge: 'STEP 3'
+            },
+            {
+              id: 4,
+              title: '物联制造 4.0：AI智能制造',
+              shortDesc: '物联网+AI技术，实现设备互联和预测性管理',
+              src: 'videos/02.mp4',
+              thumbnail: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=400&q=80',
+              duration: '16:45',
+              badge: 'STEP 4'
+            },
+            {
+              id: 5,
+              title: '商学培训 5.0：人才培养体系',
+              shortDesc: '系统化培训，培养内部导师，建立持续改善文化',
+              src: 'videos/名字由来.mp4',
+              thumbnail: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=400&q=80',
+              duration: '11:52',
+              badge: 'STEP 5'
+            }
+          ]
+        };
+      },
+
+      mounted() {
+        this.updateScroll();
+        window.addEventListener('scroll', this.updateScroll, { passive: true });
+      },
+
+      methods: {
+        updateScroll() {
+          this.scrolled = window.scrollY > 16;
+          const scrollTop = window.scrollY;
+          const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+          this.progress = (scrollTop / max) * 100;
+        },
+
+        isActive(path) {
+          const currentPath = window.location.pathname;
+          if (path === 'index.html') {
+            return currentPath === '/' || currentPath === '/index.html' || currentPath.endsWith('/');
+          }
+          return currentPath.includes(path.replace('.html', ''));
+        },
+
+        togglePlay() {
+          const video = this.$refs.mainVideo;
+          if (!video) return;
+          if (this.isPlaying) {
+            video.pause();
+            this.isPlaying = false;
+          } else {
+            video.play();
+            this.isPlaying = true;
+          }
+        },
+
+        selectVideo(video) {
+          this.currentVideo = video;
+          this.isPlaying = false;
+        }
+      }
+    }).mount('#app');
+  </script>
+
+    <style>
+    @media (min-width: 768px) {
+      .site-nav .container-page { height: 72px; }
+      .desktop-nav, .desktop-btn { display: flex !important; }
+    }
+
+    .module-card {
+      position: relative; overflow: hidden;
+      min-height: 620px;
+      max-height: 720px;
+    }
+
+    /* 视频区域顶部渐变：白色 → 深色遮罩（柔化过渡） */
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.7) 25%, rgba(0,0,0,0) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* 视频区域底部渐变：深色遮罩 → 白色（无缝衔接） */
+    .module-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 220px;
+      background: linear-gradient(0deg, #ffffff 0%, rgba(255,255,255,0.85) 35%, rgba(0,0,0,0) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .video-background {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; z-index: 0; pointer-events: none;
+    }
+
+    .video-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.5); 
+      z-index: 1;
+    }
+
+    .module-content {
+      position: relative; z-index: 3;
+      min-height: 620px;
+      max-height: 720px;
+      display: flex; align-items: center;
+      padding: 5rem 0;
+    }
+
+    .module-text-content { 
+      max-width: 720px; 
+      width: 100%;
+      text-align: left;
+    }
+
+    .module-badge {
+      display: inline-block;
+      padding: 0.45rem 1.1rem;
+      background: linear-gradient(135deg, #14b8a6, #2dd4bf);
+      border-radius: 2rem;
+      font-size: 0.75rem; font-weight: 700;
+      color: white; letter-spacing: 0.12em;
+      margin-bottom: 2.5rem;
+    }
+
+    .module-title {
+      font-size: clamp(2.25rem,4.5vw,3.25rem); 
+      font-weight: 900;
+      line-height: 1.15; 
+      margin-bottom: 1.75rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.55);
+    }
+
+    .module-subtitle {
+      font-size: 1.1875rem; 
+      font-weight: 600;
+      color: #14b8a6; 
+      margin-bottom: 2.25rem; 
+      opacity: 0.95;
+      letter-spacing: 0.02em;
+    }
+
+    .module-description {
+      font-size: 1rem; 
+      line-height: 1.9;
+      max-width: 650px;
+      margin-bottom: 2.75rem; 
+      opacity: 0.88;
+    }
+
+    .module-features { 
+      display: flex; flex-direction: column; gap: 1.15rem; 
+      margin-bottom: 3rem; 
+      max-width: 650px;
+    }
+
+    .feature-item { 
+      display: flex; align-items: flex-start; 
+      gap: 0.7rem; 
+      font-size: 0.9625rem; 
+      line-height: 1.65; 
+    }
+
+    .feature-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; background: #14b8a6; border-radius: 50%;
+      color: white; font-size: 0.7rem; font-weight: 900; flex-shrink: 0;
+    }
+
+    .module-cta {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.875rem 2rem; background: transparent;
+      border: 2px solid #14b8a6; border-radius: 0.5rem;
+      color: #14b8a6; font-size: 1rem; font-weight: 700;
+      text-decoration: none; transition: all 0.3s ease;
+    }
+
+    .module-cta:hover {
+      background: #14b8a6; color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(20,184,166,0.35);
+    }
+
+    @media (prefers-reduced-motion: reduce) { .video-background { display: none; } }
+
+    @media (max-width: 768px) {
+      .video-background { object-position: center; }
+      .video-overlay { background: rgba(0,0,0,0.7); }
+      .hero-video-overlay { background: linear-gradient(135deg, rgba(15,118,110,0.85), rgba(17,94,89,0.9)); }
+      .module-content { min-height: auto; padding: 3rem 0; }
+      .module-title { font-size: 1.75rem; }
+      .module-description { font-size: 1rem; }
+    }
+  </style>
+  <!-- AI咨询助手 -->
+  <script src="js/ai-assistant.js"></script>
+</body>
+</html>

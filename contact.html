@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="先聊清楚问题，再决定怎么改善。请说明企业规模、订单类型、当前卡点和期望目标。">
+  <title>联系咨询 | 正奇咨询精益咨询 实战专家</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>正</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Navbar -->
+    <header :class="['site-nav', { 'site-nav-solid': scrolled }]">
+      <div class="container-page" style="display: flex; align-items: center; justify-content: space-between; height: 64px;">
+        <a href="index.html" class="group" style="display: flex; align-items: center; gap: 0.75rem;">
+          <img src="images/正奇logo透明底.png" alt="正奇咨询" style="height: 42px; width: auto;" />
+          <span style="line-height: 1.2;">
+            <span style="display: block; font-size: 1rem; font-weight: 900; color: #0f172a;">正奇咨询</span>
+            <span style="display: block; font-size: 0.69rem; font-weight: 600; color: #64748b;">精益咨询 实战专家</span>
+          </span>
+        </a>
+        <nav class="desktop-nav" style="display: flex; align-items: center; gap: 0.25rem;">
+          <a v-for="item in navItems" :key="item.path" :href="item.path"
+             :class="['nav-link', { 'nav-link-active': isActive(item.path) }]">
+            {{ item.name }}
+          </a>
+        </nav>
+        <a href="contact.html" class="btn-primary btn-compact desktop-btn" style="display: inline-flex;">
+          预约调研 <span>→</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="scroll-progress" :style="{ width: progress + '%' }"></div>
+
+      <!-- Hero Section - 紧凑版 -->
+      <section style="background: #FFFFFF; padding: 3rem 0;">
+        <div class="container-page">
+          <h1 class="hero-title" style="color: #0f172a; margin-bottom: 1rem;">先聊清楚问题，再决定怎么改善</h1>
+          <p class="hero-copy" style="margin-bottom: 2rem;">
+            请说明企业规模、订单类型、当前卡点和期望目标。正奇会先做初步判断，再建议适合的沟通路径。
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+            <div class="soft-card" style="padding: 2rem; display: flex; flex-direction: column; justify-content: center; height: 280px;">
+              <h2 style="font-size: 1.25rem; font-weight: 900; color: #0f172a;">沟通前可以准备</h2>
+              <ul style="margin-top: 1rem; line-height: 2.2; color: #64748b; padding-left: 1.25rem;">
+                <li>当前月产能与订单规模</li>
+                <li>主要订单类型（贴牌/自营/外贸）</li>
+                <li>最常出现的异常问题</li>
+                <li>希望优先改善的经营指标</li>
+                <li>已有的管理报表或现场记录</li>
+              </ul>
+            </div>
+            <div style="border-radius: 8px; overflow: hidden; height: 280px;">
+              <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1400&q=80"
+                   alt="顾问与客户沟通鞋厂管理问题" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" 
+                   onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Methods Section -->
+      <section style="background: #f8fafc; padding: 3rem 0;">
+        <div class="container-page">
+          <div style="display: grid; gap: 1rem; grid-template-columns: repeat(3, 1fr);">
+            <div v-for="method in contactMethods" :key="method.title" class="list-line"
+                 style="border-radius: 0.5rem; border: 1px solid #e2e8f0; background: white; padding: 1.25rem 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+              <h3 style="font-weight: 900; color: #0f172a;">{{ method.title }}</h3>
+              <p style="margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.5; color: #64748b;">{{ method.content }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Form Section - 在线留言在最下方 -->
+      <section class="section-pad" style="background: white;">
+        <div class="container-page">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+            <!-- Form -->
+            <form @submit.prevent="handleSubmit" class="soft-card" style="display: flex; flex-direction: column; padding: 2.25rem;">
+              <h2 style="font-size: 1.5rem; font-weight: 900; color: #0f172a;">在线留言</h2>
+              <p style="margin-top: 0.75rem; line-height: 1.75; color: #64748b;">
+                尽量描述最影响经营结果的问题，例如交期、效率、品质、库存、成本或团队协作。
+              </p>
+
+              <div style="margin-top: 2rem; display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr);">
+                <input required v-model="formData.name" placeholder="您的姓名 *"
+                       class="form-field" style="border-radius: 0.5rem; border: 1px solid #e2e8f0; padding: 0.75rem 1rem; color: #0f172a;" />
+                <input v-model="formData.company" placeholder="公司名称"
+                       class="form-field" style="border-radius: 0.5rem; border: 1px solid #e2e8f0; padding: 0.75rem 1rem; color: #0f172a;" />
+                <input required v-model="formData.phone" placeholder="联系电话 *"
+                       class="form-field" style="border-radius: 0.5rem; border: 1px solid #e2e8f0; padding: 0.75rem 1rem; color: #0f172a;" />
+                <input type="email" v-model="formData.email" placeholder="电子邮箱"
+                       class="form-field" style="border-radius: 0.5rem; border: 1px solid #e2e8f0; padding: 0.75rem 1rem; color: #0f172a;" />
+              </div>
+
+              <textarea rows="7" v-model="formData.message" placeholder="请描述您的需求或当前问题..."
+                        class="form-field" style="margin-top: 1rem; min-height: 150px; width: 100%; flex: 1; resize: none; border-radius: 0.5rem; border: 1px solid #e2e8f0; padding: 0.75rem 1rem; color: #0f172a;"></textarea>
+
+              <button type="submit" :disabled="submitting" :class="['btn-primary', { 'submit-loading': submitting }]" style="margin-top: 1.25rem; width: 100%;">
+                <span>{{ submitting ? '正在提交' : '提交咨询' }}</span>
+                <span v-if="!submitting">→</span>
+              </button>
+            </form>
+
+            <!-- Right Side Image -->
+            <div style="border-radius: 8px; overflow: hidden; height: 100%; min-height: 400px;">
+              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80"
+                   alt="顾问团队复盘鞋厂改善问题" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;"
+                   onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid #e2e8f0; background: white; padding: 3rem 0;">
+      <div class="container-page">
+        <div style="display: grid; gap: 2.5rem;">
+          <div>
+            <a href="index.html" class="group" style="display: inline-flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+              <img src="images/logo智能.png" alt="正奇咨询" style="height: 42px; width: auto;" />
+              <span>
+                <span style="display: block; font-size: 1.25rem; font-weight: 900; color: #0f172a;">正奇咨询</span>
+                <span style="display: block; font-size: 0.875rem; font-weight: 600; color: #64748b;">精益咨询 实战专家</span>
+              </span>
+            </a>
+            <p style="max-width: 40rem; font-size: 0.875rem; line-height: 1.75; color: #64748b;">
+              聚焦鞋业制造现场，围绕交付、效率、品质、成本和团队协作提供调研、方案、陪跑与复盘服务。
+            </p>
+          </div>
+          <div style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div>
+              <h2 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 900; color: #0f172a;">快速导航</h2>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
+                <li><a href="about.html" style="font-size: 0.875rem; font-weight: 600; color: #64748b;">关于正奇</a></li>
+                <li><a href="team.html" style="font-size: 0.875rem; font-weight: 600; color: #64748b;">核心团队</a></li>
+                <li><a href="services.html" style="font-size: 0.875rem; font-weight: 600; color: #64748b;">咨询服务</a></li>
+                <li><a href="cases.html" style="font-size: 0.875rem; font-weight: 600; color: #64748b;">案例成果</a></li>
+                <li><a href="contact.html" style="font-size: 0.875rem; font-weight: 600; color: #64748b;">联系咨询</a></li>
+              </ul>
+            </div>
+            <div>
+              <h2 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 900; color: #0f172a;">联系信息</h2>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem; color: #64748b;">
+                <li>莆田市正奇企业管理咨询</li>
+                <li>Mobile: +86 136 5699 9381</li>
+                <li>Wechat: KW464212148</li>
+                <li>工作日 24 小时内回复</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0; font-size: 0.875rem; color: #94a3b8;">
+          <p>© 2026 正奇咨询 版权所有</p>
+          <p style="margin-top: 0.5rem;">所有咨询建议以现场调研和双方确认的项目方案为准。</p>
+        </div>
+      </div>
+    </footer>
+
+
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          scrolled: false,
+          progress: 0,
+          navItems: [
+            { name: '首页', path: 'index.html' },
+            { name: '关于正奇', path: 'about.html' },
+            { name: '核心团队', path: 'team.html' },
+            { name: '咨询服务', path: 'services.html' },
+            { name: '案例成果', path: 'cases.html' },
+            { name: '联系咨询', path: 'contact.html' }
+          ],
+          formData: {
+            name: '',
+            company: '',
+            phone: '',
+            email: '',
+            message: ''
+          },
+          submitting: false,
+          contactMethods: [
+            {
+              title: '微信咨询（推荐）',
+              content: '添加微信：KW464212148，发送企业规模、订单类型、当前卡点，顾问会在24小时内回复初步判断和建议路径。'
+            },
+            {
+              title: '电话沟通',
+              content: '拨打 +86 136 5699 9381，工作日9:00-18:00。适合紧急问题或希望快速了解改善方向的企业。'
+            },
+            {
+              title: '在线留言',
+              content: '填写下方表单，说明最影响经营的问题（交期、效率、品质、成本、库存或团队），我们会优先回复有明确问题的咨询。'
+            }
+          ]
+        };
+      },
+
+      mounted() {
+        this.updateScroll();
+        window.addEventListener('scroll', this.updateScroll, { passive: true });
+      },
+
+      methods: {
+        updateScroll() {
+          this.scrolled = window.scrollY > 16;
+          const scrollTop = window.scrollY;
+          const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+          this.progress = (scrollTop / max) * 100;
+        },
+
+        isActive(path) {
+          const currentPath = window.location.pathname;
+          if (path === 'index.html') {
+            return currentPath === '/' || currentPath === '/index.html' || currentPath.endsWith('/');
+          }
+          return currentPath.includes(path.replace('.html', ''));
+        },
+
+        handleSubmit() {
+          this.submitting = true;
+
+          // 模拟提交（实际项目中需要发送到后端API）
+          setTimeout(() => {
+            alert('感谢您的咨询！我们会在24小时内与您联系。\n\n您也可以直接拨打：+86 136 5699 9381\n或添加微信：KW464212148');
+
+            // 重置表单
+            this.formData = {
+              name: '',
+              company: '',
+              phone: '',
+              email: '',
+              message: ''
+            };
+            this.submitting = false;
+          }, 1500);
+        }
+      }
+    }).mount('#app');
+  </script>
+
+  <!-- AI咨询助手 -->
+  <script src="js/ai-assistant.js"></script>
+</body>
+</html>

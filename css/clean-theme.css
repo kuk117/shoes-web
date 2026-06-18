@@ -1,0 +1,86 @@
+/* 正奇咨询 - 清爽科技白配色方案 */
+
+:root {
+  /* 主色调 - 科技白+浅灰 */
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #F8FAFB;
+  --color-bg-tertiary: #F1F5F9;
+
+  /* 文字颜色 */
+  --color-text-primary: #1E293B;
+  --color-text-secondary: #64748B;
+  --color-text-tertiary: #94A3B8;
+
+  /* 强调色 - 青色点缀 */
+  --color-accent: #0F766E;
+  --color-accent-light: #14B8A6;
+  --color-accent-lighter: #5EEAD4;
+
+  /* 边框 */
+  --color-border: #E2E8F0;
+  --color-border-light: #F1F5F9;
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+/* 全局背景 */
+body {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+/* 导航栏 */
+.site-nav {
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.site-nav-solid {
+  background: var(--color-bg-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 卡片 */
+.soft-card {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.soft-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent-lighter);
+}
+
+/* 按钮 */
+.btn-primary {
+  background: var(--color-accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-light);
+}
+
+.btn-secondary {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-accent);
+}
+
+/* 区块背景 - 轻微灰色 */
+.section-bg-light {
+  background: var(--color-bg-secondary);
+}
+
+.section-bg-lighter {
+  background: var(--color-bg-tertiary);
+}

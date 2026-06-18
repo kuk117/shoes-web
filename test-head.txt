@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="面向鞋厂老板、经营管理团队和鞋类品牌客户，提供现场诊断、改善方案、陪跑落地和经营复盘服务。">
+  <title>正奇咨询精益咨询 实战专家 | 鞋厂管理改善与经营升级顾问</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>正</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Navbar -->
+    <header :class="['site-nav', { 'site-nav-solid': scrolled }]">
+      <div class="container-page" style="display: flex; align-items: center; justify-content: space-between; height: 64px;">
+        <a href="index.html" class="group" style="display: flex; align-items: center; gap: 0.75rem;">
+          <img src="images/正奇logo透明底.png" alt="正奇咨询" style="height: 42px; width: auto;" />
+          <span style="line-height: 1.2;">
+            <span style="display: block; font-size: 1rem; font-weight: 900; color: #17231f;">正奇咨询</span>
+            <span style="display: block; font-size: 0.69rem; font-weight: 600; color: #64746e;">精益咨询 实战专家</span>
+          </span>
+        </a>
+        <nav class="desktop-nav" style="display: flex; align-items: center; gap: 0.25rem;">
+          <a v-for="item in navItems" :key="item.path" :href="item.path"
+             :class="['nav-link', { 'nav-link-active': isActive(item.path) }]">
+            {{ item.name }}
+          </a>
+        </nav>
+        <a href="contact.html" class="btn-primary btn-compact desktop-btn" style="display: inline-flex;">
+          预约诊断 <span>→</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="scroll-progress" :style="{ width: progress + '%' }"></div>
+
+      <!-- Hero Section -->
+      <section style="position: relative; overflow: hidden; background: #f7faf8;">
+        <div class="container-page" style="display: grid; min-height: 680px; align-items: center; gap: 3rem; padding: 3.5rem 0;">
+          <div class="reveal-soft">
+            <h1 class="hero-title" style="color: #17231f;">让鞋厂改善从一张诊断清单开始</h1>
+            <p class="hero-copy" style="margin-top: 1.75rem;">
+              正奇咨询面向鞋厂老板、经营管理团队和鞋类品牌客户，围绕交付、效率、品质、成本和团队协作做现场诊断、方案设计与陪跑落地。
+            </p>
+            <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem;">
+              <a href="contact.html" class="btn-primary"><span>预约初步诊断</span> <span>→</span></a>
+              <a href="services.html" class="btn-secondary"><span>查看改善路径</span></a>
+            </div>

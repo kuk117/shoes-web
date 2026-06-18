@@ -1,0 +1,80 @@
+                  entry.target.classList.add('is-visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.16, rootMargin: '0px 0px -8% 0px' }
+          );
+
+          items.forEach((item, index) => {
+            item.style.setProperty('--reveal-delay', `${Math.min(index % 4, 3) * 90}ms`);
+            observer.observe(item);
+          });
+        },
+
+        animateCounters() {
+          const statElements = document.querySelectorAll('.stat-pulse');
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  const index = Array.from(statElements).indexOf(entry.target);
+                  if (index !== -1) {
+                    this.animateCounter(index);
+                  }
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.5 }
+          );
+
+          statElements.forEach((el) => observer.observe(el));
+        },
+
+        animateCounter(index) {
+          const stat = this.stats[index];
+          const duration = 2000;
+          const start = Date.now();
+
+          const animate = () => {
+            const now = Date.now();
+            const progress = Math.min((now - start) / duration, 1);
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            stat.displayValue = Math.floor(easeOutQuart * stat.value);
+
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            } else {
+              stat.displayValue = stat.value;
+            }
+          };
+
+          requestAnimationFrame(animate);
+        }
+      }
+    }).mount('#app');
+  </script>
+
+  <style>
+    @media (min-width: 640px) {
+      main > section:first-of-type .container-page > div:first-child { flex-direction: row; }
+    }
+    @media (min-width: 768px) {
+      .site-nav .container-page { height: 72px; }
+      .desktop-nav, .desktop-btn { display: flex !important; }
+      .list-line { grid-template-columns: 140px 1fr; }
+    }
+    @media (min-width: 1024px) {
+      main > section:first-of-type .container-page { grid-template-columns: 1.02fr 0.98fr; }
+      main > section:first-of-type .image-lift { min-height: 540px; }
+      main > section:nth-of-type(4) .container-page { grid-template-columns: 0.92fr 1.08fr; }
+      .soft-card { grid-template-columns: 1fr auto; }
+      .soft-card > div:last-child { flex-direction: column; }
+    }
+  </style>
+
+  <!-- AI咨询助手 -->
+  <script src="js/ai-assistant.js"></script>
+</body>
+</html>
