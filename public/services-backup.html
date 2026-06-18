@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="从诊断到陪跑，按企业当前阶段选择切入点。提供现场诊断、改善方案、陪跑落地和经营复盘服务。">
+  <title>咨询服务 | 正奇咨询精益咨询 实战专家</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>正</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Navbar -->
+    <header :class="['site-nav', { 'site-nav-solid': scrolled }]">
+      <div class="container-page" style="display: flex; align-items: center; justify-content: space-between; height: 64px;">
+        <a href="index.html" class="group" style="display: flex; align-items: center; gap: 0.75rem;">
+          <img src="images/正奇logo透明底.png" alt="正奇咨询" style="height: 42px; width: auto;" />
+          <span style="line-height: 1.2;">
+            <span style="display: block; font-size: 1rem; font-weight: 900; color: #17231f;">正奇咨询</span>
+            <span style="display: block; font-size: 0.69rem; font-weight: 600; color: #64746e;">精益咨询 实战专家</span>
+          </span>
+        </a>
+        <nav class="desktop-nav" style="display: flex; align-items: center; gap: 0.25rem;">
+          <a v-for="item in navItems" :key="item.path" :href="item.path"
+             :class="['nav-link', { 'nav-link-active': isActive(item.path) }]">
+            {{ item.name }}
+          </a>
+        </nav>
+        <a href="contact.html" class="btn-primary btn-compact desktop-btn" style="display: inline-flex;">
+          预约诊断 <span>→</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="scroll-progress" :style="{ width: progress + '%' }"></div>
+
+      <!-- Hero Section -->
+      <section style="background: #f7faf8; padding: 5rem 0;">
+        <div class="container-page" style="text-align: center;">
+          <h1 class="hero-title" style="margin-inline: auto; max-width: 80rem; color: #17231f;">从诊断到陪跑，按企业当前阶段选择切入点</h1>
+          <p class="hero-copy" style="margin-inline: auto; margin-top: 1.75rem;">
+            正奇不要求企业一开始就做完整项目。可以先从交付、效率、成本或团队协作中的一个高影响问题切入。
+          </p>
+        </div>
+      </section>
+
+      <!-- Services Grid -->
+      <section class="section-pad" style="background: white;">
+        <div class="container-page" style="display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+          <article v-for="service in services" :key="service.title" class="service-card soft-card hover-lift reveal-on-scroll" style="overflow: hidden;">
+            <div class="image-hover" style="position: relative; height: 240px; overflow: hidden;">
+              <img :src="service.image" :alt="service.title + '服务场景'" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+            <div style="padding: 1.75rem;">
+              <p style="font-size: 0.875rem; font-weight: 700; color: #14b8a6;">{{ service.subtitle }}</p>
+              <h2 style="margin-top: 0.5rem; font-size: 1.5rem; font-weight: 900; color: #17231f;">{{ service.title }}</h2>
+              <p style="margin-top: 1rem; line-height: 2; color: #5d6d67;">{{ service.text }}</p>
+              <div style="margin-top: 1.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                <span v-for="point in service.points" :key="point" class="service-chip" style="border-radius: 0.5rem; background: #edf7f3; padding: 0.5rem 0.75rem; text-align: center; font-size: 0.875rem; font-weight: 700; color: #31534b;">
+                  {{ point }}
+                </span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Routes Section -->
+      <section class="section-pad" style="background: #edf7f3;">
+        <div class="container-page" style="display: grid; gap: 3rem;">
+          <div class="reveal-on-scroll">
+            <h2 class="section-title">常见切入路径</h2>
+            <p class="section-copy" style="margin-top: 1.25rem;">企业可以根据当前最影响经营结果的问题选择入口。正奇会在初步沟通后判断是否需要调整方向。</p>
+            <a href="contact.html" class="btn-primary" style="margin-top: 2rem;">
+              <span>咨询适合路径</span> <span>→</span>
+            </a>
+          </div>
+          <div style="display: grid; gap: 1rem;">
+            <div v-for="route in routes" :key="route.title" class="list-line reveal-on-scroll" style="border-radius: 0.5rem; border: 1px solid #cfe3da; background: white; padding: 1.5rem 1.75rem;">
+              <h3 style="font-size: 1.25rem; font-weight: 900; color: #17231f;">{{ route.title }}</h3>
+              <p style="margin-top: 0.75rem; line-height: 1.75; color: #5d6d67;">{{ route.text }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Client Cases Section -->
+      <section class="section-pad" style="background: white;">
+        <div class="container-page">
+          <div class="reveal-on-scroll" style="text-align: center; margin-bottom: 3rem;">
+            <h2 class="section-title">服务客户案例</h2>
+            <p class="section-copy" style="margin-top: 1rem;">深耕鞋业供应链22年，服务国际品牌供应商</p>
+          </div>
+          <div style="display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+            <div v-for="clientCase in clientCases" :key="clientCase.company" class="soft-card reveal-on-scroll" style="padding: 2rem; text-align: center;">
+              <div style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: 900;">
+                {{ clientCase.icon }}
+              </div>
+              <h3 style="margin-top: 1.5rem; font-size: 1.25rem; font-weight: 900; color: #17231f;">{{ clientCase.company }}</h3>
+              <p style="margin-top: 0.75rem; font-size: 0.875rem; font-weight: 700; color: #14b8a6;">{{ clientCase.achievement }}</p>
+              <p style="margin-top: 1rem; line-height: 1.75; color: #5d6d67; font-size: 0.875rem;">{{ clientCase.effect }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Partner Brands Carousel -->
+      <section style="background: #f7faf8; padding: 3.5rem 0; overflow: hidden;">
+        <div class="container-page">
+          <div style="text-align: center; margin-bottom: 2.5rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 900; color: #17231f;">合作品牌</h2>
+            <p style="margin-top: 0.75rem; color: #5d6d67;">服务国际知名品牌供应商</p>
+          </div>
+          <div class="brand-carousel-wrapper">
+            <div class="brand-carousel">
+              <div v-for="(brand, index) in [...brands, ...brands]" :key="'brand-' + index" class="brand-item">
+                <div style="padding: 1.5rem 2rem; background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; min-width: 180px; height: 100px;">
+                  <span style="font-size: 1.25rem; font-weight: 900; color: #17231f;">{{ brand }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom CTA -->
+      <section style="background: #e8f5ef; padding: 4rem 0;">
+        <div class="container-page">
+          <div class="soft-card reveal-on-scroll" style="display: grid; gap: 2rem; padding: 2.5rem; align-items: center;">
+            <div>
+              <h2 style="font-size: 2rem; font-weight: 900; color: #17231f;">不确定从哪项服务开始？先做问题分层</h2>
+              <p style="margin-top: 1.25rem; font-size: 1.125rem; line-height: 2; color: #5d6d67;">
+                说明企业规模、订单结构和管理卡点，正奇会判断适合从诊断、方案、陪跑还是经营复盘切入。
+              </p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <a href="contact.html" class="btn-primary"><span>预约初步诊断</span> <span>→</span></a>
+              <a href="cases.html" class="btn-secondary"><span>查看案例成果</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid #d9e6df; background: white; padding: 3rem 0;">
+      <div class="container-page">
+        <div style="display: grid; gap: 2.5rem;">
+          <div>
+            <a href="index.html" class="group" style="display: inline-flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+              <img src="images/logo智能.png" alt="正奇咨询" style="height: 42px; width: auto;" />
+              <span>
+                <span style="display: block; font-size: 1.25rem; font-weight: 900; color: #17231f;">正奇咨询精益咨询 实战专家</span>
+                <span style="font-size: 0.875rem; font-weight: 600; color: #64746e;">鞋厂管理改善与经营升级顾问</span>
+              </span>
+            </a>
+            <p style="max-width: 40rem; font-size: 0.875rem; line-height: 1.75; color: #5d6d67;">
+              聚焦鞋业制造现场，围绕交付、效率、品质、成本和团队协作提供诊断、方案、陪跑与复盘服务。
+            </p>
+          </div>
+          <div style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div>
+              <h2 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 900; color: #17231f;">快速导航</h2>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
+                <li><a href="about.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">关于正奇</a></li>
+                <li><a href="team.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">核心团队</a></li>
+                <li><a href="products.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">咨询产品</a></li>
+                <li><a href="services.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">咨询服务</a></li>
+                <li><a href="cases.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">案例成果</a></li>
+                <li><a href="contact.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">联系咨询</a></li>
+              </ul>
+            </div>
+            <div>
+              <h2 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 900; color: #17231f;">联系信息</h2>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem; color: #5d6d67;">
+                <li>莆田市正奇企业管理咨询</li>
+                <li>Mobile: +86 136 5699 9381</li>
+                <li>Wechat: KW464212148</li>
+                <li>工作日 24 小时内回复</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #d9e6df; font-size: 0.875rem; color: #708078;">
+          <p>© 2026 正奇咨询精益咨询 实战专家 版权所有</p>
+          <p style="margin-top: 0.5rem;">所有咨询建议以现场诊断和双方确认的项目方案为准。</p>
+        </div>
+      </div>
+    </footer>
+
+
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          scrolled: false,
+          progress: 0,
+          navItems: [
+            { name: '首页', path: 'index.html' },
+            { name: '关于正奇', path: 'about.html' },
+            { name: '核心团队', path: 'team.html' },
+            { name: '咨询产品', path: 'products.html' },
+            { name: '咨询服务', path: 'services.html' },
+            { name: '案例成果', path: 'cases.html' },
+            { name: '联系咨询', path: 'contact.html' }
+          ],
+          services: [
+            {
+              title: '现场诊断',
+              subtitle: '快速定位',
+              text: '走产线、看订单流、访谈关键岗位，2-3天内给出问题清单和优先级建议。不收费，适合还在评估要不要做改善的企业。',
+              image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Cdefs%3E%3ClinearGradient id="g" x1="0%25" y1="0%25" x2="100%25" y2="100%25"%3E%3Cstop offset="0%25" style="stop-color:%230f766e;stop-opacity:1"/%3E%3Cstop offset="100%25" style="stop-color:%23115e59;stop-opacity:1"/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width="800" height="600" fill="url(%23g)"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="white" font-size="48" font-family="Arial">现场诊断%3C/text%3E%3C/svg%3E',
+              points: ['订单交付', '效率瓶颈', '成本漏洞', '团队协作']
+            },
+            {
+              title: '方案设计',
+              subtitle: '量身定制',
+              text: '根据诊断结果，设计改善方案和实施路径。明确改什么、怎么改、改到什么程度、谁来推、如何验收。',
+              image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Cdefs%3E%3ClinearGradient id="g" x1="0%25" y1="0%25" x2="100%25" y2="100%25"%3E%3Cstop offset="0%25" style="stop-color:%23059669;stop-opacity:1"/%3E%3Cstop offset="100%25" style="stop-color:%23047857;stop-opacity:1"/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width="800" height="600" fill="url(%23g)"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="white" font-size="48" font-family="Arial">方案设计%3C/text%3E%3C/svg%3E',
+              points: ['精益布局', 'iMES系统', '成本核算', '绩效机制']
+            },
+            {
+              title: '陪跑落地',
+              subtitle: '驻场辅导',
+              text: '顾问驻场陪跑，处理执行中的异常，训练内部团队，把方法留在企业。周期3-12个月，按项目收费。',
+              image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Cdefs%3E%3ClinearGradient id="g" x1="0%25" y1="0%25" x2="100%25" y2="100%25"%3E%3Cstop offset="0%25" style="stop-color:%2310b981;stop-opacity:1"/%3E%3Cstop offset="100%25" style="stop-color:%23059669;stop-opacity:1"/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width="800" height="600" fill="url(%23g)"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="white" font-size="48" font-family="Arial">陪跑落地%3C/text%3E%3C/svg%3E',
+              points: ['驻场辅导', '异常处理', '团队培训', '效果复盘']
+            },
+            {
+              title: '经营复盘',
+              subtitle: '持续优化',
+              text: '项目结束后，每季度或半年回访，看改善是否持续、有无新问题，帮企业保持改善惯性。',
+              image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Cdefs%3E%3ClinearGradient id="g" x1="0%25" y1="0%25" x2="100%25" y2="100%25"%3E%3Cstop offset="0%25" style="stop-color:%2334d399;stop-opacity:1"/%3E%3Cstop offset="100%25" style="stop-color:%2310b981;stop-opacity:1"/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width="800" height="600" fill="url(%23g)"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="white" font-size="48" font-family="Arial">经营复盘%3C/text%3E%3C/svg%3E',
+              points: ['效果跟踪', '问题预警', '方案调整', '经验沉淀']
+            }
+          ],
+          routes: [
+            {
+              title: '交付经常延期 → 先做精益1.0',
+              text: '重点解决订单计划、物料齐套、产线节拍问题，让交期可控。'
+            },
+            {
+              title: '效率波动大 → 先做敏捷2.0（iMES）',
+              text: '实时数据采集和看板，快速定位瓶颈工序，让管理团队知道每天该盯什么。'
+            },
+            {
+              title: '成本算不清 → 先做利润3.0',
+              text: '建立成本核算体系，把返工、损耗、报价、库存和利润表连起来，找到最值得改的环节。'
+            },
+            {
+              title: '团队推不动 → 先做商学5.0',
+              text: '训练班组长和中层，明确改善责任人、时间表、复盘节点，让改善从会议进入日常动作。'
+            }
+          ]
+        };
+      },
+
+      mounted() {
+        this.updateScroll();
+        window.addEventListener('scroll', this.updateScroll, { passive: true });
+      },
+
+      methods: {
+        updateScroll() {
+          this.scrolled = window.scrollY > 16;
+          const scrollTop = window.scrollY;
+          const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+          this.progress = (scrollTop / max) * 100;
+        },
+
+        isActive(path) {
+          const currentPath = window.location.pathname;
+          if (path === 'index.html') {
+            return currentPath === '/' || currentPath === '/index.html' || currentPath.endsWith('/');
+          }
+          return currentPath.includes(path.replace('.html', ''));
+        }
+      }
+    }).mount('#app');
+  </script>
+
+  <!-- AI咨询助手 -->
+  <script src="js/ai-assistant.js"></script>
+</body>
+</html>

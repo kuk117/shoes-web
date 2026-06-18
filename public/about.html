@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="专注鞋业制造现场的管理顾问团队，关注从订单到交付、从现场到利润的完整管理链路。">
+  <title>关于正奇 | 正奇咨询</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>正</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+  <style>
+    /* 全局统一变量 */
+    :root {
+      --anim-ease: cubic-bezier(0.2, 0, 0.2, 1);
+      --anim-duration: 750ms;
+      --reveal-delay: 0ms;
+      --primary: #0ea5e9;
+      --primary-light: #38bdf8;
+      --primary-lighter: #7dd3fc;
+      --text-dark: #0f172a;
+      --text-gray: #64748b;
+      --text-light: #94a3b8;
+      --border-light: #e2e8f0;
+      --bg-page: #f8fafb;
+      --bg-white: #ffffff;
+      --card-bg: #f8fafc;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    /* 滚动入场动画统一 */
+    .reveal-on-scroll, .reveal-soft {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease);
+      transition-delay: var(--reveal-delay);
+    }
+    .reveal-on-scroll.is-visible, .reveal-soft.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* 入场延迟阶梯 */
+    .delay-1 { --reveal-delay: 100ms; }
+    .delay-2 { --reveal-delay: 220ms; }
+    .delay-3 { --reveal-delay: 340ms; }
+    .delay-4 { --reveal-delay: 460ms; }
+
+    /* ===== 左右等高Hero区域（无留白对齐核心） ===== */
+    .hero-split {
+      position: relative;
+      background: linear-gradient(135deg, #ffffff 0%, var(--bg-page) 50%, #f5f6f7 100%);
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: stretch; /* 强制两栏等高 */
+      position: relative;
+      z-index: 2;
+    }
+    .hero-video-box {
+      width: 100%;
+      height: 100%; /* 填满父容器高度，和右侧文字上下完全齐平 */
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 8px 25px rgba(0,0,0,0.08);
+      transition: transform 0.5s var(--anim-ease), box-shadow 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8faf9;
+    }
+    .hero-video-box:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.18), 0 12px 35px rgba(0,0,0,0.12);
+    }
+    .hero-video-box video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* 视频铺满盒子，无上下留白 */
+      object-position: center;
+      background: transparent;
+    }
+    /* 关键修改：上下撑满，愿景贴顶部、价值观贴底部 */
+    .hero-content-right {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.5rem;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 1px solid #bae6fd;
+      border-radius: 2rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #0369a1;
+      letter-spacing: 0.06em;
+      animation: badge-pulse 3s ease-in-out infinite;
+    }
+    @keyframes badge-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.15); }
+      50% { box-shadow: 0 0 0 8px rgba(14, 165, 233, 0); }
+    }
+    .hero-title-main {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 900;
+      line-height: 1.3;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+    }
+    .hero-desc-main {
+      font-size: 1.0625rem;
+      line-height: 1.9;
+      color: var(--text-gray);
+    }
+
+    /* 参考图样式：右侧愿景/使命/价值观卡片 */
+    .culture-ref-card {
+      padding: 1.8rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+      border-left: 3px solid var(--primary-light);
+      transition: all 0.4s var(--anim-ease);
+      cursor: default;
+      margin: 0.75rem 0;
+    }
+    /* 第一张卡片取消上边距，贴紧顶部 */
+    .culture-ref-card:first-child {
+      margin-top: 0;
+    }
+    /* 最后一张卡片取消下边距，贴紧底部 */
+    .culture-ref-card:last-child {
+      margin-bottom: 0;
+    }
+    .culture-ref-card:hover {
+      transform: translateX(6px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      border-color: var(--primary);
+    }
+    .ref-card-head {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .ref-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--primary);
+      background: rgba(14, 165, 233, 0.1);
+      transition: transform 0.4s ease;
+    }
+    .culture-ref-card:hover .ref-icon-box {
+      transform: scale(1.1) rotate(3deg);
+    }
+    .ref-title h3 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--text-dark);
+    }
+    .ref-title p {
+      font-size: 0.825rem;
+      color: var(--text-light);
+      letter-spacing: 0.05em;
+    }
+    .ref-cn-text {
+      font-size: 1.025rem;
+      line-height: 1.7;
+      color: var(--text-dark);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .ref-en-text {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text-light);
+    }
+    /* 价值观四宫格 */
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .value-item {
+      padding: 1rem;
+      background: white;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border-light);
+    }
+    .value-item h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.3rem;
+    }
+    .value-item p {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    /* 卡片通用hover动画 */
+    .culture-card, .principle-card {
+      transition: transform 0.45s var(--anim-ease), box-shadow 0.45s var(--anim-ease), border-color 0.45s ease;
+      border: 1px solid var(--border-light);
+    }
+    .culture-card:hover, .principle-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      border-color: #c5cdc9;
+    }
+    .principle-icon {
+      transition: transform 0.5s var(--anim-ease);
+    }
+    .principle-card:hover .principle-icon {
+      transform: scale(1.08) rotate(2deg);
+    }
+
+    /* 滚动进度&导航 */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg,var(--primary),var(--primary-light));
+      z-index: 9999;
+      transition: width 0.06s linear;
+    }
+    .site-nav {
+      transition: background 0.35s var(--anim-ease), backdrop-filter 0.35s ease, border-color 0.35s ease;
+    }
+
+    /* 入场关键帧 */
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        min-height: auto;
+        padding: 4rem 0;
+      }
+      .hero-video-box {
+        max-width: 600px;
+        margin: 0 auto;
+        aspect-ratio: 16/10;
+        height: auto;
+      }
+      .hero-content-right {
+        text-align: center;
+        gap: 1.5rem;
+      }
+      .value-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .culture-ref-card:hover {
+        transform: translateY(-4px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header :class="['site-nav', { 'site-nav-solid': scrolled }]" style="background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-light);">
+      <div class="container-page" style="display: flex; align-items: center; justify-content: space-between; height: 64px;">
+        <a href="index.html" class="group" style="display: flex; align-items: center; gap: 0.75rem;">
+          <img src="images/正奇logo透明底.png" alt="正奇咨询" style="height: 42px; width: auto;" />
+          <span style="line-height: 1.2;">
+            <span style="display: block; font-size: 1rem; font-weight: 900; color: var(--text-dark);">正奇咨询</span>
+            <span style="display: block; font-size: 0.69rem; font-weight: 600; color: #64746e;">精益咨询 实战专家</span>
+          </span>
+        </a>
+        <nav class="desktop-nav" style="display: flex; align-items: center; gap: 0.25rem;">
+          <a v-for="item in navItems" :key="item.path" :href="item.path"
+             :class="['nav-link', { 'nav-link-active': isActive(item.path) }]">
+            {{ item.name }}
+          </a>
+        </nav>
+        <a href="contact.html" class="btn-primary btn-compact desktop-btn" style="display: inline-flex;">
+          预约调研 <span>→</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="scroll-progress" :style="{ width: progress + '%' }"></div>
+
+      <!-- 顶部标题 -->
+      <section style="background: linear-gradient(180deg, #ffffff 0%, #f8faf9 100%); padding: 5rem 0 3rem;">
+        <div class="container-page" style="text-align: center;">
+          <div class="reveal-soft" style="animation: fadeInUp 0.8s ease-out both;">
+            <div class="hero-badge" style="margin-bottom: 1.5rem;">正奇咨询 · 关于我们</div>
+            <h1 class="hero-title-main">专注鞋业制造现场<br>的管理顾问团队</h1>
+            <p class="hero-desc-main" style="max-width: 56rem; margin: 1.5rem auto 0;">
+              正奇服务鞋厂老板、经营管理者和鞋类品牌客户。<br>
+              我们关注的不是单点工具，而是从订单到交付、从现场到利润的完整管理链路。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 核心左右分栏：左视频（无留白铺满） + 右参考图完整文化卡片 -->
+      <section class="hero-split section-pad" style="padding-top: 2rem;">
+        <div class="container-page hero-grid">
+          <!-- 左侧视频：100%高度铺满，无上下留白 -->
+          <div class="reveal-soft" style="animation: fadeInLeft 0.8s ease-out both;">
+            <div class="hero-video-box">
+              <video src="videos/名字由来.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            </div>
+          </div>
+
+          <!-- 右侧：完全复刻第一张参考图UI -->
+          <div class="hero-content-right reveal-soft" style="animation: fadeInRight 0.8s ease-out both;">
+            <div style="background: var(--bg-white); border-radius: 16px; padding: 2rem; box-shadow: 0 8px 32px rgba(0,0,0,0.06); border: 1px solid var(--border-light); height: 100%; display: flex; flex-direction: column; position: relative; top: -8px;">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                <div style="width: 4px; height: 28px; background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 2px;"></div>
+                <h2 style="font-size: 1.375rem; font-weight: 900; color: var(--text-dark); letter-spacing: 0.02em;">正奇文化</h2>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1rem; flex: 1;">
+              <!-- 愿景卡片（贴顶部） -->
+              <div class="culture-ref-card reveal-on-scroll delay-1" style="margin: 0;">
+              <div class="ref-card-head">
+                <div class="ref-icon-box">愿</div>
+                <div class="ref-title">
+                  <h3>愿景</h3>
+                  <p>VISION</p>
+                </div>
+              </div>
+              <p class="ref-cn-text">致力于成为全球精益制造业细分市场智业服务第一品牌。</p>
+              <p class="ref-en-text">Achieving top brand of lean manufacturing knowledge service in global segment market.</p>
+            </div>
+
+            <!-- 使命卡片 -->
+            <div class="culture-ref-card reveal-on-scroll delay-2">
+              <div class="ref-card-head">
+                <div class="ref-icon-box">使</div>
+                <div class="ref-title">
+                  <h3>使命</h3>
+                  <p>MISSION</p>
+                </div>
+              </div>
+              <p class="ref-cn-text">助力成就企业家百年基业梦想，</p>
+              <p class="ref-en-text">Support the dream of building up everlasting foundation for enterpriser;</p>
+              <p class="ref-cn-text">播撒精益思想永续惠泽众生。</p>
+              <p class="ref-en-text">Spread lean philosophy allover the world to guide people sustainably;</p>
+            </div>
+
+            <!-- 核心价值观卡片（贴底部） -->
+            <div class="culture-ref-card reveal-on-scroll delay-3">
+              <div class="ref-card-head">
+                <div class="ref-icon-box">心</div>
+                <div class="ref-title">
+                  <h3>核心价值观</h3>
+                  <p>CORE MINDSET</p>
+                </div>
+              </div>
+              <div class="value-grid">
+                <div class="value-item">
+                  <h4>敬天爱人</h4>
+                  <p>Respect nature and people</p>
+                </div>
+                <div class="value-item">
+                  <h4>守正出奇</h4>
+                  <p>Abide rule and then creative</p>
+                </div>
+                <div class="value-item">
+                  <h4>用心务实</h4>
+                  <p>Work attentive and pragmatic</p>
+                </div>
+                <div class="value-item">
+                  <h4>成人达己</h4>
+                  <p>Favor others and yourself</p>
+                </div>
+              </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- 3. 经营理念（绿色标题放大） -->
+      <section class="section-pad" style="background: var(--bg-page); padding: 4rem 0;">
+        <div class="container-page" style="max-width: 900px;">
+          <div class="reveal-on-scroll" style="text-align: center; margin-bottom: 3rem;">
+            <!-- 修改：字号放大到1.25rem -->
+            <p style="font-size: 1.25rem; font-weight: 700; color: var(--primary); letter-spacing: 0.05em; margin-bottom: 1rem;">经营理念</p>
+            <h2 style="font-size: 2rem; font-weight: 900; color: var(--text-dark);">管理改善必须能回到经营结果</h2>
+          </div>
+          <div class="reveal-on-scroll" style="display: flex; flex-direction: column; gap: 1.5rem; font-size: 1.125rem; line-height: 2.25; color: var(--text-gray);">
+            <p>鞋业制造企业的问题往往互相牵连：交期不稳背后可能是计划、物料、品质、产线节拍和跨部门协作共同造成。</p>
+            <p>正奇的工作方式是先调研，再排序，再落地。我们会帮助企业把感受型问题变成可讨论的清单，把模糊目标变成可复盘的指标。</p>
+            <p>最终目标不是让企业依赖顾问，而是让团队形成可以持续运行的管理机制。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. 服务原则（绿色标题放大） -->
+      <section class="section-pad" style="background: var(--bg-white); padding: 4rem 0;">
+        <div class="container-page">
+          <div style="text-align: center; margin-bottom: 3rem;">
+            <div class="reveal-on-scroll" style="display: inline-block; padding: 0.5rem 1.25rem; background: var(--bg-white); border-radius: 2rem; margin-bottom: 1rem;">
+              <!-- 修改：字号放大到1.25rem -->
+              <span style="font-size: 1.25rem; font-weight: 700; color: var(--primary); letter-spacing: 0.05em;">服务原则</span>
+            </div>
+            <h2 class="reveal-on-scroll" style="font-size: 2rem; font-weight: 900; color: var(--text-dark);">正奇的服务原则</h2>
+          </div>
+          <div style="display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+            <!-- 扎根现场 -->
+            <div class="soft-card principle-card reveal-on-scroll delay-1" style="padding: 2rem; background: #f8fafc; border-radius: 1rem;">
+              <div class="principle-icon" style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; font-size: 1.5rem; color: #fff; font-weight: 900;">现</div>
+              <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--text-dark); margin-bottom: 0.75rem;">扎根现场</h3>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--text-gray);">从订单、计划、产线、品质、成本和团队协作看问题，不只看汇报材料。</p>
+            </div>
+            <!-- 先做排序 -->
+            <div class="soft-card principle-card reveal-on-scroll delay-2" style="padding: 2rem; background: #f8fafc; border-radius: 1rem;">
+              <div class="principle-icon" style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; font-size: 1.5rem; color: #fff; font-weight: 900;">序</div>
+              <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--text-dark); margin-bottom: 0.75rem;">先做排序</h3>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--text-gray);">把问题按经营影响、紧急程度和落地难度分层，避免一上来铺开太多动作。</p>
+            </div>
+            <!-- 陪跑执行 -->
+            <div class="soft-card principle-card reveal-on-scroll delay-3" style="padding: 2rem; background: #f8fafc; border-radius: 1rem;">
+              <div class="principle-icon" style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; font-size: 1.5rem; color: #fff; font-weight: 900;">陪</div>
+              <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--text-dark); margin-bottom: 0.75rem;">陪跑执行</h3>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--text-gray);">方案不是终点，顾问会围绕执行过程跟进异常、复盘数据、训练团队。</p>
+            </div>
+            <!-- 沉淀机制 -->
+            <div class="soft-card principle-card reveal-on-scroll delay-4" style="padding: 2rem; background: #f8fafc; border-radius: 1rem;">
+              <div class="principle-icon" style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; font-size: 1.5rem; color: #fff; font-weight: 900;">制</div>
+              <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--text-dark); margin-bottom: 0.75rem;">沉淀机制</h3>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--text-gray);">把有效动作变成企业自己的例会、看板、检查和复盘节奏。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA区块
+      <section style="background: var(--bg-page); padding: 5rem 0;">
+        <div class="container-page">
+          <div class="soft-card reveal-soft" style="display: grid; gap: 3rem; padding: 3.5rem; align-items: center; grid-template-columns: 1fr auto; background: var(--bg-white); box-shadow: 0 8px 32px rgba(14, 165, 233, 0.1); border-radius: 1rem;">
+            <div>
+              <div style="display: inline-block; padding: 0.5rem 1rem; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 2rem; margin-bottom: 1.5rem;">
+                <span style="font-size: 0.875rem; font-weight: 700; color: white;">22年鞋业经验 · 现场即判断</span>
+              </div>
+              <h2 style="font-size: 2.25rem; font-weight: 900; color: var(--text-dark); line-height: 1.3; margin-bottom: 0.5rem;">
+                不确定要不要做改善？
+              </h2>
+              <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem;">
+                让22年经验的顾问先帮您判断问题优先级
+              </h3>
+              <p style="font-size: 1.125rem; line-height: 1.8; color: var(--text-gray);">
+                正奇不强推项目。先到现场看订单流、走产线、听管理层的真实困扰，然后告诉您哪些问题最影响经营、先改什么、值不值得立项。调研结果直接带走，完全免费。
+              </p>
+              <div style="margin-top: 1.5rem; display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem; color: var(--primary); font-weight: 600;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="width: 6px; height: 6px; background: var(--primary-light); border-radius: 50%; display: inline-block;"></span>
+                  2-3天出结论
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="width: 6px; height: 6px; background: var(--primary-light); border-radius: 50%; display: inline-block;"></span>
+                  免费调研诊断
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="width: 6px; height: 6px; background: var(--primary-light); border-radius: 50%; display: inline-block;"></span>
+                  结果可带走
+                </span>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 1rem; white-space: nowrap;">
+              <a href="contact.html" class="btn-primary" style="padding: 1rem 2rem; font-size: 1.125rem; box-shadow: 0 4px 16px rgba(14, 165, 233, 0.3);"><span>预约免费调研</span> <span>→</span></a>
+              <a href="services.html" class="btn-secondary" style="padding: 1rem 2rem; font-size: 1.125rem;"><span>查看服务体系</span></a>
+            </div>
+          </div>
+        </div>
+      </section> -->
+    </main>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid var(--border-light); background: var(--bg-white); padding: 3rem 0;">
+      <div class="container-page">
+        <div style="display: grid; gap: 2.5rem;">
+          <div>
+            <a href="index.html" class="group" style="display: inline-flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+              <img src="images/logo智能.png" alt="正奇咨询" style="height: 42px; width: auto;" />
+              <span>
+                <span style="display: block; font-size: 1.25rem; font-weight: 900; color: var(--text-dark);">正奇咨询</span>
+                <span style="font-size: 0.875rem; font-weight: 600; color: #64748b;">精益咨询 实战专家</span>
+              </span>
+            </a>
+            <p style="max-width: 40rem; font-size: 0.875rem; line-height: 1.75; color: var(--text-gray);">
+              聚焦鞋业制造现场，围绕交付、效率、品质、成本和团队协作提供调研、方案、陪跑与复盘服务。
+            </p>
+          </div>
+          <div style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div>
+              <h2 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 900; color: var(--text-dark);">快速导航</h2>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
+                <li><a href="about.html" style="font-size: 0.875rem; font-weight: 600; color: var(--text-gray);">关于正奇</a></li>
+                <li><a href="team.html" style="font-size: 0.875rem; font-weight: 600; color: var(--text-gray);">核心团队</a></li>
+                <li><a href="services.html" style="font-size: 0.875rem; font-weight: 600; color: var(--text-gray);">咨询服务</a></li>
+                <li><a href="cases.html" style="font-size: 0.875rem; font-weight: 600; color: var(--text-gray);">案例成果</a></li>
+                <li><a href="contact.html" style="font-size: 0.875rem; font-weight: 600; color: var(--text-gray);">联系咨询</a></li>
+              </ul>
+            </div>
+            <div>
+              <h2 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 900; color: var(--text-dark);">联系信息</h2>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem; color: var(--text-gray);">
+                <li>莆田市正奇企业管理咨询</li>
+                <li>Mobile: +86 136 5699 9381</li>
+                <li>Wechat: KW464212148</li>
+                <li>工作日 24 小时内回复</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); font-size: 0.875rem; color: #94a3b8;">
+          <p>© 2026 正奇咨询 版权所有</p>
+          <p style="margin-top: 0.5rem;">所有咨询建议以现场调研和双方确认的项目方案为准。</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          scrolled: false,
+          progress: 0,
+          navItems: [
+            { name: '首页', path: 'index.html' },
+            { name: '关于正奇', path: 'about.html' },
+            { name: '核心团队', path: 'team.html' },
+            { name: '咨询服务', path: 'services.html' },
+            { name: '案例成果', path: 'cases.html' },
+            { name: '联系咨询', path: 'contact.html' }
+          ]
+        };
+      },
+      mounted() {
+        this.updateScroll();
+        window.addEventListener('scroll', this.updateScroll, { passive: true });
+        this.initScrollObserver();
+      },
+      methods: {
+        updateScroll() {
+          this.scrolled = window.scrollY > 16;
+          const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+          this.progress = (window.scrollY / max) * 100;
+        },
+        initScrollObserver() {
+          const items = document.querySelectorAll('.reveal-on-scroll, .reveal-soft');
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.05, rootMargin: '0px 0px -5% 0px' }
+          );
+          items.forEach((item) => observer.observe(item));
+        },
+        isActive(path) {
+          const cp = window.location.pathname;
+          if (path === 'index.html') return cp === '/' || cp === '/index.html' || cp.endsWith('/');
+          return cp.includes(path.replace('.html', ''));
+        }
+      }
+    }).mount('#app');
+  </script>
+  <script src="js/ai-assistant.js"></script>
+</body>
+</html>

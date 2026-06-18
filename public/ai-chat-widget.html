@@ -1,0 +1,150 @@
+<!-- AI 咨询助手浮动按钮 -->
+<button
+  type="button"
+  @click="toggleChat"
+  class="ai-chat-button"
+  aria-label="打开咨询助手"
+  :class="{ 'ai-chat-button-active': chatOpen }">
+  <svg viewBox="0 0 48 48" class="h-7 w-7" fill="none" aria-hidden="true">
+    <path d="M10 12h28v23H10z" stroke="currentColor" stroke-width="3" stroke-linejoin="round"></path>
+    <path d="M16 19h16M16 26h10" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+    <path d="m31 31 7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+  </svg>
+</button>
+
+<!-- AI 咨询助手面板 -->
+<div v-if="chatOpen" class="ai-chat-panel">
+  <div class="ai-chat-header">
+    <div>
+      <h3 style="font-weight: 700; color: white;">正奇咨询助手</h3>
+      <p style="font-size: 0.875rem; color: rgba(255,255,255,0.9); margin-top: 0.25rem;">专业鞋业管理顾问</p>
+    </div>
+    <button @click="toggleChat" aria-label="关闭" style="color: white; font-size: 1.5rem; line-height: 1;">&times;</button>
+  </div>
+  <div class="ai-chat-body">
+    <div class="ai-message">
+      <p style="font-size: 0.875rem; line-height: 1.6; color: #5d6d67;">
+        您好！我是正奇咨询助手。<br><br>
+        我可以帮您了解：<br>
+        • 精益制造1.0 - 基础管理标准化<br>
+        • 敏捷制造2.0 - iMES智能系统<br>
+        • 利润制造3.0 - 成本优化管理<br>
+        • 物联制造4.0 - AI智能制造<br>
+        • 商学培训5.0 - 团队能力提升<br><br>
+        请问您想了解哪方面的内容？
+      </p>
+    </div>
+  </div>
+  <div class="ai-chat-footer">
+    <input
+      type="text"
+      placeholder="输入您的问题..."
+      style="flex: 1; padding: 0.75rem; border: 1px solid #d9e6df; border-radius: 0.5rem; font-size: 0.875rem;"
+      @keyup.enter="sendMessage">
+    <button
+      @click="sendMessage"
+      style="padding: 0.75rem 1.5rem; background: #14b8a6; color: white; border-radius: 0.5rem; font-weight: 600; transition: background 0.3s;"
+      onmouseover="this.style.background='#0d9488'"
+      onmouseout="this.style.background='#14b8a6'">
+      发送
+    </button>
+  </div>
+</div>
+
+<style>
+.ai-chat-button {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  height: 3.5rem;
+  width: 3.5rem;
+  border-radius: 9999px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+  background: #14b8a6;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.ai-chat-button:hover {
+  transform: translateY(-4px);
+  background: #0d9488;
+  box-shadow: 0 25px 30px -5px rgba(15, 118, 110, 0.3);
+}
+
+@media (min-width: 768px) {
+  .ai-chat-button {
+    bottom: 2rem;
+    right: 2rem;
+  }
+}
+
+.ai-chat-panel {
+  position: fixed;
+  bottom: 6.5rem;
+  right: 1.5rem;
+  z-index: 50;
+  width: 380px;
+  max-width: calc(100vw - 3rem);
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 768px) {
+  .ai-chat-panel {
+    bottom: 7.5rem;
+    right: 2rem;
+  }
+}
+
+.ai-chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  color: white;
+  border-radius: 1rem 1rem 0 0;
+}
+
+.ai-chat-body {
+  flex: 1;
+  padding: 1.25rem;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.ai-message {
+  background: #f7faf8;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border-left: 3px solid #14b8a6;
+}
+
+.ai-chat-footer {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-top: 1px solid #d9e6df;
+}
+</style>

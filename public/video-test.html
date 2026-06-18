@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视频背景视差效果测试</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* 视频背景容器 */
+    .video-parallax-section {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 视频背景 */
+    .video-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120%; /* 比容器高，为视差效果留空间 */
+      overflow: hidden;
+      z-index: 0;
+      will-change: transform;
+    }
+
+    .video-background video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+    }
+
+    /* 遮罩层 */
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(23, 35, 31, 0.3) 0%,
+        rgba(23, 35, 31, 0.5) 50%,
+        rgba(23, 35, 31, 0.7) 100%
+      );
+      z-index: 1;
+    }
+
+    /* 内容层 */
+    .video-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: white;
+      padding: 2rem;
+      max-width: 900px;
+    }
+
+    .video-content h1 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .video-content p {
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      line-height: 1.8;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    /* 测试用的其他内容区域 */
+    .demo-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+    }
+
+    .demo-section:nth-child(odd) {
+      background: #f7faf8;
+    }
+
+    .demo-section:nth-child(even) {
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- 视频视差区域 -->
+    <section class="video-parallax-section">
+      <!-- 视频背景 -->
+      <div class="video-background" id="videoParallax">
+        <video autoplay loop muted playsinline id="bgVideo">
+          <!-- 等待你提供视频文件后替换 -->
+          <source src="video/background.mp4" type="video/mp4">
+          <source src="video/background.webm" type="video/webm">
+          您的浏览器不支持视频播放
+        </video>
+      </div>
+
+      <!-- 遮罩层 -->
+      <div class="video-overlay"></div>
+
+      <!-- 内容层 -->
+      <div class="video-content">
+        <h1>正奇咨询</h1>
+        <p>精益咨询 实战专家<br>让制造现场管理更高效</p>
+      </div>
+    </section>
+
+    <!-- 测试滚动效果的其他区域 -->
+    <section class="demo-section">
+      <div class="container-page">
+        <h2 style="font-size: 2.5rem; font-weight: 900; color: #17231f; text-align: center;">
+          向下滚动查看视频视差效果
+        </h2>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <div class="container-page">
+        <h2 style="font-size: 2rem; font-weight: 900; color: #17231f; text-align: center;">
+          继续滚动...
+        </h2>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <div class="container-page">
+        <h2 style="font-size: 2rem; font-weight: 900; color: #17231f; text-align: center;">
+          回到顶部查看效果
+        </h2>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // 视差滚动效果
+    function initVideoParallax() {
+      const videoContainer = document.getElementById('videoParallax');
+      const video = document.getElementById('bgVideo');
+
+      // 确保视频能够自动播放
+      video.play().catch(err => {
+        console.log('视频自动播放被阻止，需要用户交互');
+      });
+
+      // 滚动视差效果
+      function updateParallax() {
+        const scrolled = window.pageYOffset;
+        const sectionHeight = window.innerHeight;
+
+        // 当在视频区域内时应用视差效果
+        if (scrolled < sectionHeight) {
+          // 视差移动速度（0.3 表示移动速度是滚动速度的 30%）
+          const parallaxSpeed = 0.3;
+          const yPos = scrolled * parallaxSpeed;
+
+          // 使用 transform 而非 top，性能更好
+          videoContainer.style.transform = `translate3d(0, ${yPos}px, 0)`;
+        }
+      }
+
+      // 使用 requestAnimationFrame 实现平滑滚动
+      let ticking = false;
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            updateParallax();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // 初始调用
+      updateParallax();
+    }
+
+    // 页面加载后初始化
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initVideoParallax);
+    } else {
+      initVideoParallax();
+    }
+  </script>
+</body>
+</html>

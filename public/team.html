@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="正奇企业管理咨询专业师资团队">
+  <title>核心团队 | 正奇咨询</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>正</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    .team-section {
+      background: #ffffff;
+      padding: 5rem 0 4rem;
+      min-height: 100vh;
+    }
+
+    /* 标题组 */
+    .team-title-tag {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #6c757d;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    .team-title-main {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin: 1.5rem 0 1rem;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.2s forwards;
+    }
+    .team-title-desc {
+      font-size: 1.125rem;
+      color: #6c757d;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.4s forwards;
+    }
+    .team-title-en {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #adb5bd;
+      letter-spacing: 0.2em;
+      margin-top: 2rem;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.6s forwards;
+    }
+
+    /* 切换标签 */
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .filter-tab {
+      padding: 0.6rem 1.5rem;
+      border: 1px solid #e9ecef;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #6c757d;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .filter-tab:hover {
+      border-color: #14b8a6;
+      color: #14b8a6;
+    }
+    .filter-tab.active {
+      background: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 100%);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    /* 轮播容器 */
+    .carousel-wrapper {
+      position: relative;
+      margin-top: 3rem;
+      overflow: hidden;
+    }
+    .carousel-track {
+      display: flex;
+      gap: 2rem;
+      padding: 1rem 0;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: grab;
+      user-select: none;
+    }
+    .carousel-track:active { cursor: grabbing; }
+
+    /* 卡片样式 */
+    .expert-card {
+      flex: 0 0 calc(33.333% - 1.333rem);
+      min-width: 300px;
+      background: #ffffff;
+      border-radius: 1.5rem;
+      border: 1px solid #f0f0f0;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    }
+    .expert-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(15, 118, 110, 0.12);
+    }
+
+    /* 头像 */
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 1.5rem;
+      border: 3px solid #f0f0f0;
+      transition: all 0.4s ease;
+    }
+    .expert-card:hover .avatar {
+      border-color: #2dd4bf;
+      transform: scale(1.05);
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 卡片文字 */
+    .expert-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.5rem;
+    }
+    .expert-role {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #6c757d;
+      margin-bottom: 1rem;
+    }
+    .expert-exp {
+      display: inline-block;
+      padding: 0.375rem 1rem;
+      background: #f0fdf8;
+      border: 1px solid #d1fae5;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #14b8a6;
+      margin-bottom: 1rem;
+    }
+    .expert-bio {
+      font-size: 0.875rem;
+      line-height: 1.7;
+      color: #6c757d;
+      margin-bottom: 1.25rem;
+      min-height: 60px;
+    }
+    .expert-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    .expert-tag {
+      padding: 0.375rem 0.75rem;
+      background: #f0fdf8;
+      border: 1px solid #d1fae5;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #14b8a6;
+    }
+    .expert-cert {
+      font-size: 0.75rem;
+      color: #adb5bd;
+      padding-top: 1rem;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    /* 箭头按钮 */
+    .carousel-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .carousel-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid #e9ecef;
+      background: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      color: #6c757d;
+    }
+    .carousel-btn:hover {
+      border-color: #14b8a6;
+      color: #14b8a6;
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.15);
+    }
+    .carousel-dots {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #e9ecef;
+      transition: all 0.3s ease;
+    }
+    .carousel-dot.active {
+      background: #14b8a6;
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    /* 动画 */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .card-animate {
+      opacity: 0;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    .card-animate:nth-child(1) { animation-delay: 0.3s; }
+    .card-animate:nth-child(2) { animation-delay: 0.5s; }
+    .card-animate:nth-child(3) { animation-delay: 0.7s; }
+
+    /* 响应式 */
+    @media (max-width: 1024px) {
+      .expert-card { flex: 0 0 calc(50% - 1rem); }
+    }
+    @media (max-width: 640px) {
+      .expert-card { flex: 0 0 100%; min-width: 280px; }
+      .team-title-main { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header :class="['site-nav', { 'site-nav-solid': scrolled }]">
+      <div class="container-page" style="display: flex; align-items: center; justify-content: space-between; height: 64px;">
+        <a href="index.html" class="group" style="display: flex; align-items: center; gap: 0.75rem;">
+          <img src="images/正奇logo透明底.png" alt="正奇咨询" style="height: 42px; width: auto;" />
+          <span style="line-height: 1.2;">
+            <span style="display: block; font-size: 1rem; font-weight: 900; color: #17231f;">正奇咨询</span>
+            <span style="display: block; font-size: 0.69rem; font-weight: 600; color: #64746e;">精益咨询 实战专家</span>
+          </span>
+        </a>
+        <nav class="desktop-nav" style="display: flex; align-items: center; gap: 0.25rem;">
+          <a v-for="item in navItems" :key="item.path" :href="item.path"
+             :class="['nav-link', { 'nav-link-active': isActive(item.path) }]">
+            {{ item.name }}
+          </a>
+        </nav>
+        <a href="contact.html" class="btn-primary btn-compact desktop-btn" style="display: inline-flex;">
+          预约调研 <span>→</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="scroll-progress" :style="{ width: progress + '%' }"></div>
+
+      <section class="team-section">
+        <div class="container-page">
+          <div style="text-align: center;">
+            <span class="team-title-tag">正奇咨询・实战专家团队</span>
+            <h1 class="team-title-main">核心团队</h1>
+            <p class="team-title-desc">
+              正奇拥有一支专业师资团队，涵盖精益管理、利润管控和信息化三大核心领域。团队成员均拥有10年以上鞋业制造管理或咨询经验，来自丰泰集团、宝成集团等国际知名鞋企。
+            </p>
+            <p class="team-title-en">TEAM EXPERTS</p>
+            <div class="filter-tabs">
+              <button v-for="tab in tabs" :key="tab.key"
+                      :class="['filter-tab', { active: activeTab === tab.key }]"
+                      @click="switchTab(tab.key)">
+                {{ tab.name }}
+              </button>
+            </div>
+          </div>
+
+          <div class="carousel-wrapper">
+            <div class="carousel-track" ref="track"
+                 @mousedown="startDrag"
+                 @mousemove="onDrag"
+                 @mouseup="endDrag"
+                 @mouseleave="endDrag"
+                 @touchstart="startDrag"
+                 @touchmove="onDrag"
+                 @touchend="endDrag">
+              <div v-for="(expert, idx) in currentExperts" :key="expert.name"
+                   class="expert-card card-animate">
+                <div class="avatar">
+                  <img :src="expert.img" :alt="expert.name" />
+                </div>
+                <h3 class="expert-name">{{ expert.name }}</h3>
+                <p class="expert-role">{{ expert.role }}</p>
+                <span class="expert-exp">{{ expert.exp }}</span>
+                <p class="expert-bio">{{ expert.bio }}</p>
+                <div class="expert-tags">
+                  <span v-for="tag in expert.tags" :key="tag" class="expert-tag">{{ tag }}</span>
+                </div>
+                <p class="expert-cert">{{ expert.cert }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-nav" v-if="totalPages > 1">
+            <button class="carousel-btn" @click="prev">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+            <div class="carousel-dots">
+              <span v-for="p in totalPages" :key="p"
+                    :class="['carousel-dot', { active: currentPage === p - 1 }]"
+                    @click="currentPage = p - 1"></span>
+            </div>
+            <button class="carousel-btn" @click="next">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section style="background: linear-gradient(135deg, #f7fcfb 0%, #ffffff 100%); padding: 4rem 0;">
+        <div class="container-page">
+          <div class="soft-card reveal-soft" style="display: grid; grid-template-columns: 1fr 320px; gap: 4rem; padding: 3rem; align-items: center; background: #fff; border-radius: 1rem; border:1px solid var(--border-light);">
+            <div>
+              <div style="display: inline-block; padding: 0.45rem 1.2rem; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 999px; margin-bottom: 1.25rem;">
+                <span style="font-size: 0.85rem; font-weight: 700; color: #fff;">团队平均18年鞋业原厂管理经验</span>
+              </div>
+              <h2 style="font-size: 2rem; font-weight: 900; color: var(--text-dark); line-height: 1.3; margin-bottom: 0.75rem;">
+                专业顾问一对一匹配服务
+              </h2>
+              <p style="font-size: 1.05rem; line-height: 1.75; color: var(--text-gray); margin-bottom: 1.5rem;">
+                无论产线效率、成本利润还是数字化系统问题，我们都会匹配对应领域资深顾问，实地调研输出可落地改善方案。
+              </p>
+              <div style="display: flex; flex-wrap: wrap; gap: 1.25rem; font-size: 0.875rem; font-weight: 600; color: var(--primary);">
+                <span style="display: flex; align-items: center; gap: 0.4rem;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--primary-lighter);"></span>
+                  免费需求诊断
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.4rem;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--primary-lighter);"></span>
+                  资深顾问指派
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.4rem;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--primary-lighter);"></span>
+                  诊断报告可带走
+                </span>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+              <a href="contact.html" class="btn-primary" style="padding: 1rem 1.75rem; font-size: 1.05rem; text-align:center;">预约专家沟通</a>
+              <a href="cases.html" class="btn-secondary" style="padding: 1rem 1.75rem; font-size: 1.05rem; text-align:center;">查看落地案例</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer style="border-top: 1px solid #E2E8F0; background: white; padding: 3rem 0;">
+      <div class="container-page">
+        <div style="display: grid; gap: 2.5rem;">
+          <div>
+            <a href="index.html" class="group" style="display: inline-flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+              <img src="images/logo智能.png" alt="正奇咨询" style="height: 42px; width: auto;" />
+              <span>
+                <span style="display: block; font-size: 1.25rem; font-weight: 900; color: #17231f;">正奇咨询精益咨询 实战专家</span>
+                <span style="font-size: 0.875rem; font-weight: 600; color: #64746e;">鞋厂管理改善与经营升级顾问</span>
+              </span>
+            </a>
+            <p style="max-width: 40rem; font-size: 0.875rem; line-height: 1.75; color: #5d6d67;">
+              聚焦鞋业制造现场，围绕交付、效率、品质、成本和团队协作提供调研、方案、陪跑与复盘服务。
+            </p>
+          </div>
+          <div style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div>
+              <h2 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 900; color: #17231f;">快速导航</h2>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
+                <li><a href="about.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">关于正奇</a></li>
+                <li><a href="team.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">核心团队</a></li>
+                <li><a href="services.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">咨询服务</a></li>
+                <li><a href="cases.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">案例成果</a></li>
+                <li><a href="contact.html" style="font-size: 0.875rem; font-weight: 600; color: #5d6d67;">联系咨询</a></li>
+              </ul>
+            </div>
+            <div>
+              <h2 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 900; color: #17231f;">联系信息</h2>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem; color: #5d6d67;">
+                <li>莆田市正奇企业管理咨询</li>
+                <li>Mobile: +86 136 5699 9381</li>
+                <li>Wechat: KW464212148</li>
+                <li>工作日 24 小时内回复</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #E2E8F0; font-size: 0.875rem; color: #708078;">
+          <p>© 2026 正奇咨询精益咨询 实战专家 版权所有</p>
+          <p style="margin-top: 0.5rem;">所有咨询建议以现场调研和双方确认的项目方案为准。</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          scrolled: false,
+          progress: 0,
+          activeTab: 'lean',
+          currentPage: 0,
+          isDragging: false,
+          startX: 0,
+          currentX: 0,
+          navItems: [
+            { name: '首页', path: 'index.html' },
+            { name: '关于正奇', path: 'about.html' },
+            { name: '核心团队', path: 'team.html' },
+            { name: '咨询服务', path: 'services.html' },
+            { name: '案例成果', path: 'cases.html' },
+            { name: '联系咨询', path: 'contact.html' }
+          ],
+          tabs: [
+            { key: 'lean', name: '精益管理专家' },
+            { key: 'info', name: '信息化专家' },
+            { key: 'profit', name: '利润管控专家' }
+          ],
+          experts: {
+            lean: [
+              { name: '吴智峰', role: '创始人', exp: '精益・18年经验', img: 'images/师1.png', bio: '拥有18年鞋业制造管理与咨询经验。曾在丰泰集团NIKE高端生产基地担任多个高级管理职位，2011年起专注鞋业咨询。', tags: ['鞋企战略', '精益现场优化', '供应链管理'], cert: 'NIKE全球黑带精益师・全国注册管理咨询师' },
+              { name: '梁德伟', role: '导师', exp: '精益・12年经验', img: 'images/师2.png', bio: '精益事业部导师，曾任百丽国际生产车间主任。2012年起从事专业鞋业咨询，辅导广东、福建、浙江等地优质鞋企。', tags: ['精益生控优化', '成本管控', '团队打造'], cert: '精益培训师资格・ISO内审员资格' },
+              { name: '李玉珍', role: '资深顾问师', exp: '精益・10年经验', img: 'images/师3.png', bio: '曾任宝成集团精益改善部主管。2013年起从事专业精益生产咨询，辅导福建、四川、浙江等地优质鞋企。', tags: ['精益改善', '精益优化', '项目管理'], cert: 'Adidas精益系统培训・全国注册管理咨询师' },
+              { name: '刘彦浪', role: '资深顾问师', exp: '精益・21年经验', img: 'images/师4.png', bio: '曾在清禄集团（NIKE、Adidas、美津浓生产基地）担任生产高级管理职位。2009年起从事专业精益生产咨询。', tags: ['生产管理', '精益现场优化'], cert: '清禄集团生产高级管理11年' },
+              { name: '佘爱珍', role: '资深顾问师', exp: '精益・22年经验', img: 'images/师6.png', bio: '曾在珠海信星集团担任生控主任18年，后在宝成集团从事生控现场咨询辅导工作。', tags: ['生控管理', '现场咨询辅导', '精益生产'], cert: '信星集团生控主任18年' },
+              { name: '龚岳斌', role: '资深顾问师', exp: '精益・16年经验', img: 'images/师7.png', bio: '曾在多家大型台资鞋企担任生控管理职位，具有丰富的国际品牌生产管理经验，服务过Adidas、NB、Skecher等品牌。', tags: ['仓储管理', '生控管理', '精益生产咨询'], cert: '柬埔寨、越南工厂管理经验' }
+            ],
+            profit: [
+              { name: '戴静敏', role: '资深顾问师', exp: '利润・21年经验', img: 'images/师5.png', bio: '在丰泰集团NIKE高端生产基地工作21年，历任规划经理、出口协理、出口副总等高级管理职位。', tags: ['产能评估', '财务体系管理', '成本管控', '企业合规体系建立'], cert: 'NIKE精益基础训练营资质・SHRM培训系统合格学员' }
+            ],
+            info: [
+              { name: '姚启新', role: '高级合伙人', exp: '信息化・22年经验', img: 'images/师9.png', bio: '拥有22年鞋业信息化建设经验，丰泰集团19年经验。专注于鞋业智能制造执行系统(iMES)的产品规划研发与实施落地。', tags: ['信息化系统规划', 'MES系统', 'iMES系统', '产品规划研发'], cert: 'Oracle国际认证工程师・Microsoft国际认证工程师' },
+              { name: '翁志刚', role: '资深顾问师', exp: '信息化・18年经验', img: 'images/师8.png', bio: '曾在丰泰集团从事管理系统开发，并赴印度辅导系统上线。具有创业经历，擅长电子商务和系统整合。', tags: ['管理系统开发', '系统维护', '系统整合'], cert: '丰泰集团7年系统开发・印度工厂系统上线辅导' },
+              { name: '丘永峰', role: '资深顾问师', exp: '信息化・15年经验', img: 'images/师10.png', bio: '曾在清禄鞋业、贵人鸟、喜得龙等多家知名鞋企负责信息化系统建设与ERP系统开发。', tags: ['ERP系统开发', '信息化建设', '数据库管理'], cert: '多家知名鞋企信息化建设经验' }
+            ]
+          }
+        };
+      },
+      computed: {
+        currentExperts() {
+          return this.experts[this.activeTab] || [];
+        },
+        totalPages() {
+          const perPage = this.getPerPage();
+          return Math.ceil(this.currentExperts.length / perPage);
+        }
+      },
+      mounted() {
+        this.updateScroll();
+        window.addEventListener('scroll', this.updateScroll, { passive: true });
+        window.addEventListener('resize', this.handleResize);
+        this.initScrollObserver();
+      },
+      methods: {
+        updateScroll() {
+          this.scrolled = window.scrollY > 16;
+          const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+          this.progress = (window.scrollY / max) * 100;
+        },
+        initScrollObserver() {
+          const items = document.querySelectorAll('.reveal-on-scroll, .reveal-soft, .reveal-left, .reveal-right, .reveal-zoom');
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.12, rootMargin: '0px 0px -5% 0px' }
+          );
+          items.forEach((item) => observer.observe(item));
+        },
+        isActive(path) {
+          const cp = window.location.pathname;
+          if (path === 'index.html') return cp === '/' || cp === '/index.html' || cp.endsWith('/');
+          return cp.includes(path.replace('.html', ''));
+        },
+        switchTab(key) {
+          this.activeTab = key;
+          this.currentPage = 0;
+          this.$nextTick(() => {
+            this.updateCarousel();
+          });
+        },
+        getPerPage() {
+          const w = window.innerWidth;
+          if (w < 640) return 1;
+          if (w < 1024) return 2;
+          return 3;
+        },
+        handleResize() {
+          this.currentPage = 0;
+          this.updateCarousel();
+        },
+        prev() {
+          this.currentPage = this.currentPage > 0 ? this.currentPage - 1 : this.totalPages - 1;
+          this.updateCarousel();
+        },
+        next() {
+          this.currentPage = this.currentPage < this.totalPages - 1 ? this.currentPage + 1 : 0;
+          this.updateCarousel();
+        },
+        updateCarousel() {
+          const carousel = this.$refs.track;
+          if (!carousel) return;
+          const cards = carousel.querySelectorAll('.expert-card');
+          if (!cards.length) return;
+          const perPage = this.getPerPage();
+          const cardWidth = cards[0].offsetWidth;
+          const gap = 32;
+          const offset = -(this.currentPage * perPage * (cardWidth + gap));
+          carousel.style.transform = `translateX(${offset}px)`;
+          this.animateCards();
+        },
+        animateCards() {
+          const cards = document.querySelectorAll('.expert-card');
+          cards.forEach((card, i) => {
+            card.style.animation = 'none';
+            card.offsetHeight;
+            card.style.animation = `fadeInUp 0.6s ease ${0.1 * i}s forwards`;
+          });
+        },
+        startDrag(e) {
+          this.isDragging = true;
+          this.startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+        },
+        onDrag(e) {
+          if (!this.isDragging) return;
+          const x = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+          this.currentX = x - this.startX;
+        },
+        endDrag() {
+          if (!this.isDragging) return;
+          this.isDragging = false;
+          if (Math.abs(this.currentX) > 50) {
+            if (this.currentX < 0) this.next();
+            else this.prev();
+          }
+          this.currentX = 0;
+        }
+      }
+    }).mount('#app');
+  </script>
+  <script src="js/ai-assistant.js"></script>
+</body>
+</html>
