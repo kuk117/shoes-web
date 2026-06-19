@@ -155,6 +155,13 @@
       z-index: 2;
     }
 
+    /* 修复 soft-card 覆盖 module-bg 的问题 */
+    .module-card > .module-bg,
+    .module-card > .module-overlay {
+      position: absolute !important;
+      z-index: 0 !important;
+    }
+
     /* 视频展示模块 */
     .video-showcase {
       background: #ffffff;
