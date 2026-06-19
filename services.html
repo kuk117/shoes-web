@@ -26,17 +26,18 @@
       .services-grid {
         grid-template-columns: 1fr;
       }
+      
+      .service-card::after {
+        background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%);
+      }
     }
 
     /* 服务卡片增强动效 */
     .service-card {
       position: relative;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .service-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(20, 184, 166, 0.12);
+      overflow: hidden;
+      background: white;
     }
 
     .service-card::before {
@@ -49,10 +50,37 @@
       background: linear-gradient(90deg, #14b8a6, #2dd4bf);
       transform: scaleX(0);
       transition: transform 0.4s ease;
+      z-index: 10;
     }
 
     .service-card:hover::before {
       transform: scaleX(1);
+    }
+
+    .service-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.88) 100%);
+      transition: all 0.4s ease;
+      z-index: 1;
+    }
+
+    .service-card:hover::after {
+      background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.82) 100%);
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(20, 184, 166, 0.15);
+    }
+
+    .service-card-content {
+      position: relative;
+      z-index: 2;
     }
 
     /* 服务SVG图标 */
@@ -86,6 +114,45 @@
 
     .service-card:hover .service-icon svg {
       stroke: white;
+    }
+
+    /* 产品模块背景图片 */
+    .module-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.45;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 0;
+    }
+
+    .module-card:hover .module-bg {
+      opacity: 0.55;
+      transform: scale(1.05);
+    }
+
+    .module-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.65) 100%);
+      z-index: 1;
+    }
+
+    .module-card > div:not(.module-bg):not(.module-overlay) {
+      position: relative;
+      z-index: 2;
     }
 
     /* 视频展示模块 */
@@ -500,7 +567,9 @@
         <!-- Module 1: 精益制造 1.0 -->
         <section class="section-pad" style="background: #f8faf9;">
           <div class="container-page">
-            <div class="soft-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #ffffff; border-radius: 1rem; border: 1px solid #e8eaeb;">
+            <div class="soft-card module-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #ffffff; border-radius: 1rem; border: 1px solid #e8eaeb;">
+              <div class="module-bg" style="background-image: url('https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=800&q=80');"></div>
+              <div class="module-overlay"></div>
               <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f1f3f2, #e8eaeb); border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                 <span style="font-size: 2rem; font-weight: 900; color: #4a5568;">1</span>
               </div>
@@ -534,7 +603,9 @@
         <!-- Module 2: 敏捷制造 2.0 -->
         <section class="section-pad" style="background: #ffffff; padding-top: 3rem;">
           <div class="container-page">
-            <div class="soft-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #fafbfb; border-radius: 1rem; border: 1px solid #e8eaeb;">
+            <div class="soft-card module-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #fafbfb; border-radius: 1rem; border: 1px solid #e8eaeb;">
+              <div class="module-bg" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80');"></div>
+              <div class="module-overlay"></div>
               <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f1f3f2, #e8eaeb); border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                 <span style="font-size: 2rem; font-weight: 900; color: #4a5568;">2</span>
               </div>
@@ -568,7 +639,9 @@
         <!-- Module 3: 利润制造 3.0 -->
         <section class="section-pad" style="background: #f8faf9;">
           <div class="container-page">
-            <div class="soft-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #ffffff; border-radius: 1rem; border: 1px solid #e8eaeb;">
+            <div class="soft-card module-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #ffffff; border-radius: 1rem; border: 1px solid #e8eaeb;">
+              <div class="module-bg" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80');"></div>
+              <div class="module-overlay"></div>
               <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f1f3f2, #e8eaeb); border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                 <span style="font-size: 2rem; font-weight: 900; color: #4a5568;">3</span>
               </div>
@@ -602,7 +675,9 @@
         <!-- Module 4: 物联制造 4.0 -->
         <section class="section-pad" style="background: #ffffff;">
           <div class="container-page">
-            <div class="soft-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #fafbfb; border-radius: 1rem; border: 1px solid #e8eaeb;">
+            <div class="soft-card module-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #fafbfb; border-radius: 1rem; border: 1px solid #e8eaeb;">
+              <div class="module-bg" style="background-image: url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80');"></div>
+              <div class="module-overlay"></div>
               <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f1f3f2, #e8eaeb); border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                 <span style="font-size: 2rem; font-weight: 900; color: #4a5568;">4</span>
               </div>
@@ -636,7 +711,9 @@
         <!-- Module 5: 商学培训 5.0 -->
         <section class="section-pad" style="background: #f8faf9;">
           <div class="container-page">
-            <div class="soft-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #ffffff; border-radius: 1rem; border: 1px solid #e8eaeb;">
+            <div class="soft-card module-card reveal-on-scroll" style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; padding: 3rem; background: #ffffff; border-radius: 1rem; border: 1px solid #e8eaeb;">
+              <div class="module-bg" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80');"></div>
+              <div class="module-overlay"></div>
               <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f1f3f2, #e8eaeb); border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                 <span style="font-size: 2rem; font-weight: 900; color: #4a5568;">5</span>
               </div>
@@ -677,13 +754,13 @@
           </div>
           <div class="services-grid">
             <article v-for="service in services" :key="service.title" class="service-card soft-card reveal-on-scroll">
-              <div style="padding: 2rem 1.75rem 1.75rem;">
+              <div class="service-card-content" style="padding: 2rem 1.75rem 1.75rem;">
                 <div class="service-icon" v-html="service.icon"></div>
                 <p style="font-size: 0.875rem; font-weight: 700; color: #14b8a6; text-align: center;">{{ service.subtitle }}</p>
                 <h2 style="margin-top: 0.5rem; font-size: 1.5rem; font-weight: 900; color: #1e293b; text-align: center;">{{ service.title }}</h2>
                 <p style="margin-top: 1rem; line-height: 1.8; color: #64748b; font-size: 0.9rem;">{{ service.text }}</p>
                 <div style="margin-top: 1.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
-                  <span v-for="point in service.points" :key="point" class="service-chip" style="border-radius: 0.5rem; background: #f1f5f9; padding: 0.5rem 0.75rem; text-align: center; font-size: 0.875rem; font-weight: 700; color: #14b8a6; border: 1px solid #d1d9e0;">
+                  <span v-for="point in service.points" :key="point" class="service-chip" style="border-radius: 0.5rem; background: rgba(241, 245, 249, 0.9); padding: 0.5rem 0.75rem; text-align: center; font-size: 0.875rem; font-weight: 700; color: #14b8a6; border: 1px solid rgba(209, 217, 224, 0.8); backdrop-filter: blur(4px);">
                     {{ point }}
                   </span>
                 </div>

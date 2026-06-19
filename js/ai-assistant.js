@@ -1,5 +1,29 @@
 // 正奇咨询AI助手组件 - 完整聊天功能
 (function() {
+  // ========== 配置区 ==========
+  // 通义千问API配置
+  const API_KEY = 'sk-88df006c6b7f44aea1cb03f747187fda';
+  const API_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
+  const MODEL = 'qwen-turbo';
+  
+  // 系统提示词 - 定义AI助手的角色和知识
+  const SYSTEM_PROMPT = `你是正奇咨询的专业鞋业管理顾问助手。你的职责是帮助客户了解正奇咨询的服务：
+
+核心服务：
+• 精益制造1.0 - 基础管理标准化（5S、标准化作业、目视化管理）
+• 敏捷制造2.0 - iMES智能系统（生产执行、数据采集、排程优化）
+• 利润制造3.0 - 成本优化管理（BOM分析、工艺降本、质量成本控制）
+• 物联制造4.0 - AI智能制造（设备联网、预测维护、智能排产）
+• 商学培训5.0 - 团队能力提升（精益道场、实战训练、管理认证）
+
+联系方式：+86 136 5699 9381
+工作时间：周一至周五 9:00-18:00
+
+回答要求：
+1. 简洁专业，突出价值
+2. 如需深入了解，引导客户联系顾问
+3. 保持友好专业的语气`;
+
   // 聊天状态
   let chatOpen = false;
   let messages = [];
@@ -100,34 +124,53 @@
     const loadingMsg = addMessage('正在思考中...', 'assistant', true);
 
     try {
-      // 调用后端API
-      const response = await fetch('/api/chat', {
+      // 通过CORS代理调用通义千问API
+      const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(API_URL);
+      const response = await fetch(proxyUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY}`
         },
         body: JSON.stringify({
-          messages: messages.map(msg => ({
-            role: msg.role,
-            content: msg.content
-          }))
+          model: MODEL,
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...messages.map(msg => ({
+              role: msg.role,
+              content: msg.content
+            }))
+          ]
         }),
       });
+
+      if (!response.ok) {
+        throw new Error(`API请求失败: ${response.status}`);
+      }
 
       const data = await response.json();
       
       // 移除加载消息
       loadingMsg.remove();
       
-      if (data.reply) {
-        addMessage(data.reply, 'assistant');
+      const reply = data.choices?.[0]?.message?.content;
+      if (reply) {
+        addMessage(reply, 'assistant');
+        messages.push({ role: 'assistant', content: reply });
       } else {
         addMessage('抱歉，暂时无法回答您的问题。请稍后重试或联系我们：+86 136 5699 9381', 'assistant');
       }
     } catch (error) {
       console.error('API调用错误:', error);
       loadingMsg.remove();
-      addMessage('网络连接出现问题，请检查网络后重试。', 'assistant');
+      
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        addMessage('网络连接出现问题，请检查网络后重试。', 'assistant');
+      } else if (error.message.includes('401')) {
+        addMessage('API Key无效，请检查配置。', 'assistant');
+      } else {
+        addMessage('服务暂时不可用，请稍后重试。', 'assistant');
+      }
     } finally {
       isLoading = false;
       sendBtn.disabled = false;
